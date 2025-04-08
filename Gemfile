@@ -55,6 +55,9 @@ group :development, :test do
   # Rspec for testing [https://rspec.info/]
   gem "rspec-rails"
 
+  # Rubocop for static analysis [https://github.com/rubocop/rubocop]
+  gem "rubocop"
+
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
