@@ -8,7 +8,12 @@ namespace :imdb do
       next if index == 0
 
       data = line.split("\t")
-      person_data << { unique_id: data[0], name: data[1] }
+      person_data << {
+        unique_id: data[0],
+        name: data[1],
+        birth_year: data[2] == '\N' ? nil : data[2].to_i,
+        death_year: data[3] == '\N' ? nil : data[3].to_i
+      }
 
       if index % 10_000 == 0
         Person.import person_data
