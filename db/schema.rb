@@ -15,11 +15,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
   enable_extension "pg_catalog.plpgsql"
 
   create_table "people", force: :cascade do |t|
-    t.string "unique_id"
-    t.string "name"
+    t.string "unique_id", null: false
+    t.string "name", null: false
     t.integer "birth_year"
     t.integer "death_year"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["unique_id"], name: "index_people_on_unique_id", unique: true
   end
 end
