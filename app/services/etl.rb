@@ -1,23 +1,9 @@
 # frozen_string_literal: true
 
 class Etl
-  def load
-    filename = extract
-    puts "Loading person data"
-    person_data = []
-    File.open(filename, mode: "rb") do |file|
-      Zlib::GzipReader.new(file).each_line.with_index do |line, index|
-        next if index == 0
-
-        person_data << transform_person_data(line)
-        if index % 10_000 == 0
-          Person.import person_data, validate: false
-          person_data = []
-        end
-      end
-    end
-    Person.import person_data
-    puts "Person data loaded."
+  def perform
+    extract_data
+    load_data
   end
 
   private
@@ -33,7 +19,7 @@ class Etl
     }
   end
 
-  def extract
+  def extract_data
     puts "Downloading person data"
     response = Faraday.get("https://datasets.imdbws.com/name.basics.tsv.gz")
     filename = "#{Rails.root}/tmp/name.basics.tsv.gz"
@@ -42,5 +28,23 @@ class Etl
     end
     puts "Person data downloaded"
     filename
+  end
+
+  def load_data
+    puts "Loading person data"
+    person_data = []
+    File.open("#{Rails.root}/tmp/name.basics.tsv.gz", mode: "rb") do |file|
+      Zlib::GzipReader.new(file).each_line.with_index do |line, index|
+        next if index == 0
+
+        person_data << transform_person_data(line)
+        if index % 10_000 == 0
+          Person.import person_data, validate: false
+          person_data = []
+        end
+      end
+    end
+    Person.import person_data
+    puts "Person data loaded."
   end
 end
