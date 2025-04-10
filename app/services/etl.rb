@@ -2,15 +2,13 @@
 
 class Etl
   def perform
-    extract_data
-    load_data
+    extract_data("name.basics.tsv.gz")
+    load_person_data
   end
 
   private
 
-  def transform_person_data(line)
-    data = line.split("\t")
-
+  def transform_person_data(data)
     {
       unique_id: data[0],
       name: data[1],
@@ -19,25 +17,29 @@ class Etl
     }
   end
 
-  def extract_data
-    puts "Downloading person data"
-    response = Faraday.get("https://datasets.imdbws.com/name.basics.tsv.gz")
-    filename = "#{Rails.root}/tmp/name.basics.tsv.gz"
+  def local_filename(filename)
+    "#{Rails.root}/tmp/#{filename}"
+  end
+
+  def extract_data(filename)
+    puts "Downloading #{filename}"
+    response = Faraday.get("https://datasets.imdbws.com/#{filename}")
+    filename = local_filename(filename)
     File.open(filename, mode: "wb") do |file|
       file.write(response.body)
     end
-    puts "Person data downloaded"
+    puts " #{filename} downloaded"
     filename
   end
 
-  def load_data
+  def load_person_data
     puts "Loading person data"
     person_data = []
-    File.open("#{Rails.root}/tmp/name.basics.tsv.gz", mode: "rb") do |file|
+    File.open("#{local_filename("name.basics.tsv.gz")}", mode: "rb") do |file|
       Zlib::GzipReader.new(file).each_line.with_index do |line, index|
         next if index == 0
 
-        person_data << transform_person_data(line)
+        person_data << transform_person_data(line.split("\t"))
         if index % 10_000 == 0
           Person.import person_data, validate: false
           person_data = []
