@@ -26,6 +26,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
 
   create_table "titles", force: :cascade do |t|
     t.string "unique_id", null: false
+    t.string "type", null: false
     t.string "title", null: false
     t.string "original_title", null: false
     t.boolean "adult", null: false

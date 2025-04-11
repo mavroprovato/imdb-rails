@@ -4,8 +4,8 @@ class Etl
   def perform
     extract_data("title.basics.tsv.gz")
     load_title_data
-    extract_data("name.basics.tsv.gz")
-    load_person_data
+    # extract_data("name.basics.tsv.gz")
+    # load_person_data
   end
 
   private
@@ -22,12 +22,12 @@ class Etl
       file.write(response.body)
     end
     puts " #{filename} downloaded"
-    filename
   end
 
   def transform_title_data(data)
     {
       unique_id: data[0],
+      type: data[1],
       title: data[2],
       original_title: data[3],
       adult: data[4] == "1",
