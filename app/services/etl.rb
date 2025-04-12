@@ -2,10 +2,7 @@
 
 class Etl
   def perform
-    extract_data("title.basics.tsv.gz")
-    load_title_data
-    # extract_data("name.basics.tsv.gz")
-    # load_person_data
+    load_title_basics
   end
 
   private
@@ -21,7 +18,23 @@ class Etl
     File.open(filename, mode: "wb") do |file|
       file.write(response.body)
     end
-    puts " #{filename} downloaded"
+    puts "#{filename} downloaded"
+  end
+
+  def read_data(filename)
+    data = []
+    File.open("#{local_filename(filename)}", mode: "rb") do |file|
+      Zlib::GzipReader.new(file).each_line.with_index do |line, index|
+        next if index == 0
+
+        data << line.split("\t")
+        if index % 10_000 == 0
+          yield data
+          data = []
+        end
+      end
+      yield data
+    end
   end
 
   def transform_title_data(data)
@@ -37,6 +50,14 @@ class Etl
     }
   end
 
+  def load_title_basics
+    extract_data("title.basics.tsv.gz")
+    read_data("title.basics.tsv.gz") do |data|
+      title_data = data.map { |row| transform_title_data(row) }
+      Title.import title_data, validate: false
+    end
+  end
+
   def transform_person_data(data)
     {
       unique_id: data[0],
@@ -44,41 +65,5 @@ class Etl
       birth_year: data[2] == '\N' ? nil : data[2].to_i,
       death_year: data[3] == '\N' ? nil : data[3].to_i
     }
-  end
-
-  def load_title_data
-    puts "Loading title data"
-    title_data = []
-    File.open("#{local_filename("title.basics.tsv.gz")}", mode: "rb") do |file|
-      Zlib::GzipReader.new(file).each_line.with_index do |line, index|
-        next if index == 0
-
-        title_data << transform_title_data(line.split("\t"))
-        if index % 10_000 == 0
-          Title.import title_data, validate: false
-          title_data = []
-        end
-      end
-    end
-    Title.import title_data
-    puts "Title data loaded."
-  end
-
-  def load_person_data
-    puts "Loading person data"
-    person_data = []
-    File.open("#{local_filename("name.basics.tsv.gz")}", mode: "rb") do |file|
-      Zlib::GzipReader.new(file).each_line.with_index do |line, index|
-        next if index == 0
-
-        person_data << transform_person_data(line.split("\t"))
-        if index % 10_000 == 0
-          Person.import person_data, validate: false
-          person_data = []
-        end
-      end
-    end
-    Person.import person_data
-    puts "Person data loaded."
   end
 end

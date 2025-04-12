@@ -14,6 +14,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "title_type", ["movie", "short", "tvEpisode", "tvMiniSeries", "tvMovie", "tvPilot", "tvSeries", "tvShort", "tvSpecial", "video", "videoGame"]
+
   create_table "people", force: :cascade do |t|
     t.string "unique_id", null: false
     t.string "name", null: false
@@ -26,7 +30,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
 
   create_table "titles", force: :cascade do |t|
     t.string "unique_id", null: false
-    t.string "type", null: false
+    t.enum "type", null: false, enum_type: "title_type"
     t.string "title", null: false
     t.string "original_title", null: false
     t.boolean "adult", null: false

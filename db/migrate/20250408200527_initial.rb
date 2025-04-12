@@ -1,8 +1,13 @@
 class Initial < ActiveRecord::Migration[8.0]
   def change
+    execute <<~SQL
+      CREATE TYPE title_type AS
+      ENUM ('movie', 'short', 'tvEpisode', 'tvMiniSeries', 'tvMovie', 'tvPilot', 'tvSeries', 'tvShort', 'tvSpecial', 'video', 'videoGame');
+    SQL
+
     create_table :titles do |t|
       t.string :unique_id, null: false, index: { unique: true }
-      t.string :type, null: false
+      t.column :type, :title_type, null: false
       t.string :title, null: false
       t.string :original_title, null: false
       t.boolean :adult, null: false
