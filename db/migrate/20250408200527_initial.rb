@@ -5,6 +5,12 @@ class Initial < ActiveRecord::Migration[8.0]
       ENUM ('movie', 'short', 'tvEpisode', 'tvMiniSeries', 'tvMovie', 'tvPilot', 'tvSeries', 'tvShort', 'tvSpecial', 'video', 'videoGame');
     SQL
 
+    create_table :genres do |t|
+      t.string :name, null: false, index: { unique: true }
+
+      t.timestamps
+    end
+
     create_table :titles do |t|
       t.string :unique_id, null: false, index: { unique: true }
       t.column :type, :title_type, null: false

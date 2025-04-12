@@ -18,6 +18,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "title_type", ["movie", "short", "tvEpisode", "tvMiniSeries", "tvMovie", "tvPilot", "tvSeries", "tvShort", "tvSpecial", "video", "videoGame"]
 
+  create_table "genres", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_genres_on_name", unique: true
+  end
+
   create_table "people", force: :cascade do |t|
     t.string "unique_id", null: false
     t.string "name", null: false
