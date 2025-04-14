@@ -3,36 +3,6 @@
 class Etl
   def perform
     GenreLoader.new.load_data
-  end
-
-  private
-
-  def transform_title_data(data)
-    {
-      unique_id: data[0],
-      type: data[1],
-      title: data[2],
-      original_title: data[3],
-      adult: data[4] == "1",
-      start_year: data[5] == '\N' ? nil : data[5].to_i,
-      end_year: data[6] == '\N' ? nil : data[6].to_i,
-      runtime: data[7].to_i
-    }
-  end
-
-  def load_title_basics
-    read_data(Downloader.new("title.basics.tsv.gz").download) do |data|
-      title_data = data.map { |row| transform_title_data(row) }
-      Title.import title_data, validate: false
-    end
-  end
-
-  def transform_person_data(data)
-    {
-      unique_id: data[0],
-      name: data[1],
-      birth_year: data[2] == '\N' ? nil : data[2].to_i,
-      death_year: data[3] == '\N' ? nil : data[3].to_i
-    }
+    TitleLoader.new.load_data
   end
 end

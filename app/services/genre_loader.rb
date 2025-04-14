@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class GenreLoader < Loader
+
   def load_data
     puts "Loading genre data..."
     genres = Set.new
