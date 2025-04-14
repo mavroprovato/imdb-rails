@@ -7,22 +7,9 @@ class Etl
 
   private
 
-  def local_filename(filename)
-    "#{Rails.root}/tmp/#{filename}"
-  end
-
-  def extract_data(filename)
-    puts "Downloading #{filename}"
-    response = Faraday.get("https://datasets.imdbws.com/#{filename}")
-    File.open(local_filename(filename), mode: "wb") do |file|
-      file.write(response.body)
-    end
-    puts "#{filename} downloaded"
-  end
-
   def read_data(filename)
     data = []
-    File.open(local_filename(filename), mode: "rb") do |file|
+    File.open(filename, mode: "rb") do |file|
       Zlib::GzipReader.new(file).each_line.with_index do |line, index|
         next if index == 0
 
@@ -30,9 +17,11 @@ class Etl
         if index % 10_000 == 0
           yield data
           data = []
+          puts "Processed #{index} rows"
         end
       end
       yield data
+      puts "Processed #{index} rows"
     end
   end
 
@@ -50,8 +39,7 @@ class Etl
   end
 
   def load_title_basics
-    extract_data("title.basics.tsv.gz")
-    read_data("title.basics.tsv.gz") do |data|
+    read_data(Downloader.new("title.basics.tsv.gz").download) do |data|
       title_data = data.map { |row| transform_title_data(row) }
       Title.import title_data, validate: false
     end
