@@ -14,7 +14,7 @@ class Etl
         next if index == 0
 
         data << line.split("\t")
-        if index % 10_000 == 0
+        if index % 100_000 == 0
           yield data
           data = []
           puts "Processed #{index} rows"
