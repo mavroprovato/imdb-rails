@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-class GenreLoader
+class GenreLoader < Loader
   def load_data
+    puts "Loading genre data..."
     genres = Set.new
     read_batch(Downloader.new(filename).download) do |batch|
       batch.each do |row|
@@ -9,26 +10,7 @@ class GenreLoader
       end
     end
     Genre.import genres.to_a, validate: false
-  end
-
-  protected
-
-  def read_batch(data_filename)
-    data = []
-    File.open(data_filename, mode: "rb") do |file|
-      Zlib::GzipReader.new(file).each_line.with_index do |line, index|
-        next if index == 0
-
-        data << line.split("\t")
-        if index % 100_000 == 0
-          yield data
-          data = []
-          puts "Processed #{index} rows"
-        end
-      end
-      yield data
-      puts "Processed all rows"
-    end
+    puts "Genre data loaded"
   end
 
   private
