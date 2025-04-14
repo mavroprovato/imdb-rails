@@ -25,6 +25,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.index ["name"], name: "index_genres_on_name", unique: true
   end
 
+  create_table "genres_titles", id: false, force: :cascade do |t|
+    t.bigint "genre_id", null: false
+    t.bigint "title_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["genre_id", "title_id"], name: "index_genres_titles_on_genre_id_and_title_id"
+  end
+
   create_table "people", force: :cascade do |t|
     t.string "unique_id", null: false
     t.string "name", null: false

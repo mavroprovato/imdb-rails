@@ -24,6 +24,12 @@ class Initial < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
+    create_join_table :genres, :titles do |t|
+      t.index [ :genre_id, :title_id ]
+
+      t.timestamps
+    end
+
     create_table :people do |t|
       t.string :unique_id, null: false, index: { unique: true }
       t.string :name, null: false
