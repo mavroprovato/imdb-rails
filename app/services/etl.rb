@@ -14,8 +14,7 @@ class Etl
   def extract_data(filename)
     puts "Downloading #{filename}"
     response = Faraday.get("https://datasets.imdbws.com/#{filename}")
-    filename = local_filename(filename)
-    File.open(filename, mode: "wb") do |file|
+    File.open(local_filename(filename), mode: "wb") do |file|
       file.write(response.body)
     end
     puts "#{filename} downloaded"
@@ -23,7 +22,7 @@ class Etl
 
   def read_data(filename)
     data = []
-    File.open("#{local_filename(filename)}", mode: "rb") do |file|
+    File.open(local_filename(filename), mode: "rb") do |file|
       Zlib::GzipReader.new(file).each_line.with_index do |line, index|
         next if index == 0
 
