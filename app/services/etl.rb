@@ -2,28 +2,10 @@
 
 class Etl
   def perform
-    load_title_basics
+    GenreLoader.new.load_data
   end
 
   private
-
-  def read_data(filename)
-    data = []
-    File.open(filename, mode: "rb") do |file|
-      Zlib::GzipReader.new(file).each_line.with_index do |line, index|
-        next if index == 0
-
-        data << line.split("\t")
-        if index % 100_000 == 0
-          yield data
-          data = []
-          puts "Processed #{index} rows"
-        end
-      end
-      yield data
-      puts "Processed #{index} rows"
-    end
-  end
 
   def transform_title_data(data)
     {
