@@ -24,8 +24,9 @@ class Initial < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    create_join_table :genres, :titles do |t|
-      t.index [ :genre_id, :title_id ]
+    create_table :title_genres do |t|
+      t.belongs_to :title, null: false, foreign_key: true, index: true
+      t.belongs_to :genre, null: false, foreign_key: true, index: true
 
       t.timestamps
     end

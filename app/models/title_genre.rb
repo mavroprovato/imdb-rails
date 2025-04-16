@@ -1,0 +1,2 @@
+class TitleGenre < ApplicationRecord
+end
