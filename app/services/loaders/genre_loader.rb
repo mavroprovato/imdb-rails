@@ -10,7 +10,7 @@ module Loaders
           genres |= transform_row(row)
         end
       end
-      Genre.import genres.to_a, validate: false
+      Genre.import genres.to_a, validate: false, on_duplicate_key_ignore: true
       puts "Genre data loaded"
     end
 
