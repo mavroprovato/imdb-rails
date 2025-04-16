@@ -2,7 +2,7 @@
 
 class Etl
   def perform
-    GenreLoader.new.load_data
-    TitleLoader.new.load_data
+    Loaders::GenreLoader.new.load_data
+    Loaders::TitleLoader.new.load_data
   end
 end
