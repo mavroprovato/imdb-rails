@@ -2,7 +2,15 @@
 
 module Loaders
   class BaseLoader
+    def load_data
+      raise NotImplementedError, "#{self.class} must implement the '#{__method__}' method "
+    end
+
     protected
+
+    def filename
+      raise NotImplementedError, "#{self.class} must implement the '#{__method__}' method"
+    end
 
     def read_batch(data_filename, batch_size = 100_000)
       data = []
