@@ -9,7 +9,10 @@ module Loaders
         batch.each do |row|
           title_data << transform_row(row)
         end
-        Title.import title_data, validate: false
+        Title.import title_data, validate: false, on_duplicate_key_update: {
+          conflict_target: [ :unique_id ],
+          columns: [ :type, :title, :original_title, :adult, :start_year, :end_year, :runtime ]
+        }
       end
       puts "Title data loaded"
     end
