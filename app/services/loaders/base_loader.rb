@@ -6,20 +6,18 @@ module Loaders
 
     def read_batch(data_filename, batch_size = 100_000)
       data = []
-      File.open(data_filename, mode: "rb") do |file|
-        Zlib::GzipReader.new(file).each_line.with_index do |line, index|
-          next if index == 0
+      Zlib::GzipReader.new(File.open(data_filename, mode: "rb")).each_line.with_index do |line, index|
+        next if index == 0
 
-          data << line.split("\t")
-          if index % batch_size == 0
-            yield data
-            data = []
-            puts "Processed #{index} rows"
-          end
+        data << line.split("\t")
+        if index % batch_size == 0
+          yield data
+          data = []
+          puts "Processed #{index} rows"
         end
-        yield data
-        puts "Processed all rows"
       end
+      yield data
+      puts "Processed all rows"
     end
   end
 end
