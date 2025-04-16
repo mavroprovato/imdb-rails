@@ -2,22 +2,18 @@
 
 module Loaders
   class TitleLoader < BaseLoader
-    def load_data
-      puts "Loading title data..."
-      read_batch(Downloader.new(filename).download) do |batch|
-        Title.import title_data(batch), validate: false, on_duplicate_key_update: {
-          conflict_target: [ :unique_id ],
-          columns: [ :type, :title, :original_title, :adult, :start_year, :end_year, :runtime ]
-        }
-        TitleGenre.import title_genre_data(batch), validate: false, on_duplicate_key_ignore: true
-      end
-      puts "Title data loaded"
-    end
-
     protected
 
     def filename
       "title.basics.tsv.gz"
+    end
+
+    def process_data(batch)
+      Title.import title_data(batch), validate: false, on_duplicate_key_update: {
+        conflict_target: [ :unique_id ],
+        columns: [ :type, :title, :original_title, :adult, :start_year, :end_year, :runtime ]
+      }
+      TitleGenre.import title_genre_data(batch), validate: false, on_duplicate_key_ignore: true
     end
 
     private
@@ -37,16 +33,16 @@ module Loaders
       end
     end
 
-    def genres
-      @genres ||= Genre.all.pluck(:id, :name).each_with_object({}) { |(id, name), hash| hash[name] = id }
-    end
-
     def titles(batch)
       Title.where(
         unique_id: batch.map { |row| row[0] }
       ).pluck(:id, :unique_id).each_with_object({}) do |(id, unique_id), hash|
         hash[unique_id] = id
       end
+    end
+
+    def genres
+      @genres ||= Genre.all.pluck(:id, :name).each_with_object({}) { |(id, name), hash| hash[name] = id }
     end
 
     def title_genre_data(batch)

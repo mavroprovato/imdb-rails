@@ -2,8 +2,21 @@
 
 module Loaders
   class BaseLoader
-    def load_data
-      raise NotImplementedError, "#{self.class} must implement the '#{__method__}' method "
+    def load_data(batch_size = 100_000)
+      local_filename = Downloader.new(filename).download
+      batch = []
+      Zlib::GzipReader.new(File.open(local_filename, mode: "rb")).each_line.with_index do |line, index|
+        next if index == 0
+
+        batch << line.split("\t")
+        if index % batch_size == 0
+          process_data(batch)
+          batch = []
+          puts "Processed #{index} rows"
+        end
+      end
+      process_data(batch)
+      puts "Processed all rows"
     end
 
     protected
@@ -12,20 +25,8 @@ module Loaders
       raise NotImplementedError, "#{self.class} must implement the '#{__method__}' method"
     end
 
-    def read_batch(data_filename, batch_size = 100_000)
-      data = []
-      Zlib::GzipReader.new(File.open(data_filename, mode: "rb")).each_line.with_index do |line, index|
-        next if index == 0
-
-        data << line.split("\t")
-        if index % batch_size == 0
-          yield data
-          data = []
-          puts "Processed #{index} rows"
-        end
-      end
-      yield data
-      puts "Processed all rows"
+    def process_data(batch)
+      raise NotImplementedError, "#{self.class} must implement the '#{__method__}' method"
     end
   end
 end
