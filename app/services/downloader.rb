@@ -20,7 +20,7 @@ class Downloader
       file.write(response.headers["etag"])
     end
     puts "#{filename} downloaded"
-    filename
+    local_filename
   end
 
   private

@@ -5,11 +5,7 @@ module Loaders
     def load_data
       puts "Loading title data..."
       read_batch(Downloader.new(filename).download) do |batch|
-        title_data = []
-        batch.each do |row|
-          title_data << transform_row(row)
-        end
-        Title.import title_data, validate: false, on_duplicate_key_update: {
+        Title.import title_data(batch), validate: false, on_duplicate_key_update: {
           conflict_target: [ :unique_id ],
           columns: [ :type, :title, :original_title, :adult, :start_year, :end_year, :runtime ]
         }
@@ -17,10 +13,16 @@ module Loaders
       puts "Title data loaded"
     end
 
-    private
+    protected
 
     def filename
       "title.basics.tsv.gz"
+    end
+
+    private
+
+    def title_data(batch)
+      batch.map { |row| transform_row(row) }
     end
 
     def transform_row(row)
