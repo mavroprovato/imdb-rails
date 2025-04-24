@@ -1,11 +1,12 @@
 FactoryBot.define do
   factory :title do
-    unique_id { "MyString" }
-    title { "MyString" }
-    original_title { "MyString" }
+    unique_id { "unique_id" }
+    title_type { "movie" }
+    title { "Title" }
+    original_title { "Original Title" }
     adult { false }
-    start_year { 1 }
-    end_year { 1 }
-    runtime { 1 }
+    start_year { Date.current.year }
+    end_year { Date.current.year }
+    runtime { 120 }
   end
 end

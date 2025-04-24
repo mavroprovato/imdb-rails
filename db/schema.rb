@@ -46,13 +46,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
 
   create_table "titles", force: :cascade do |t|
     t.string "unique_id", null: false
-    t.enum "type", null: false, enum_type: "title_type"
+    t.enum "title_type", null: false, enum_type: "title_type"
     t.string "title", null: false
     t.string "original_title", null: false
     t.boolean "adult", null: false
     t.integer "start_year"
     t.integer "end_year"
-    t.integer "runtime"
+    t.integer "runtime", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["unique_id"], name: "index_titles_on_unique_id", unique: true

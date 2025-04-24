@@ -13,13 +13,13 @@ class Initial < ActiveRecord::Migration[8.0]
 
     create_table :titles do |t|
       t.string :unique_id, null: false, index: { unique: true }
-      t.column :type, :title_type, null: false
+      t.column :title_type, :title_type, null: false
       t.string :title, null: false
       t.string :original_title, null: false
       t.boolean :adult, null: false
       t.integer :start_year
       t.integer :end_year
-      t.integer :runtime
+      t.integer :runtime, null: false
 
       t.timestamps
     end
