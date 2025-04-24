@@ -11,7 +11,7 @@ module Loaders
     def process_data(batch)
       Title.import title_data(batch), validate: false, on_duplicate_key_update: {
         conflict_target: [ :unique_id ],
-        columns: [ :type, :title, :original_title, :adult, :start_year, :end_year, :runtime ]
+        columns: [ :title_type, :title, :original_title, :adult, :start_year, :end_year, :runtime ]
       }
       TitleGenre.import title_genre_data(batch), validate: false, on_duplicate_key_ignore: true
     end
@@ -22,7 +22,7 @@ module Loaders
       batch.map do |row|
         {
           unique_id: row[0],
-          type: row[1],
+          title_type: row[1],
           title: row[2],
           original_title: row[3],
           adult: row[4] == "1",
