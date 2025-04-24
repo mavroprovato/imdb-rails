@@ -45,18 +45,9 @@ gem "thruster", require: false
 # Add Faraday for HTTP requests
 gem "faraday", "~> 2.13"
 
-group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-
-  # Factory bot for generating test data [https://github.com/thoughtbot/factory_bot_rails]
-  gem "factory_bot_rails"
-
+group :development do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
-
-  # Rspec for testing [https://rspec.info/]
-  gem "rspec-rails"
 
   # Rubocop for static analysis [https://github.com/rubocop/rubocop]
   gem "rubocop"
@@ -66,6 +57,20 @@ group :development, :test do
 
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+end
+
+group :development, :test do
+  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+
+  # Factory bot for generating test data [https://github.com/thoughtbot/factory_bot_rails]
+  gem "factory_bot_rails"
+
+  # Rspec for testing [https://rspec.info/]
+  gem "rspec-rails"
+
+  # One-liners to test common Rails functionality
+  gem "shoulda-matchers", "~> 6.0"
 end
 
 gem "activerecord-import", "~> 2.1"
