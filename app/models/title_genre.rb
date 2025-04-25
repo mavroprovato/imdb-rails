@@ -8,4 +8,5 @@ class TitleGenre < ApplicationRecord
 
   validates :title_id, presence: true
   validates :genre_id, presence: true
+  validates :title_id, uniqueness: { scope: :genre_id }
 end
