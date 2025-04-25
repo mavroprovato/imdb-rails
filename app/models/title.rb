@@ -6,6 +6,10 @@ class Title < ApplicationRecord
     tv_pilot: "tvPilot", tv_series: "tvSeries", tv_short: "tvShort", tv_special: "tvSpecial", video: "video",
     video_game: "videoGame"
   }
+
+  has_many :title_genres
+  has_many :genres, through: :title_genres
+
   validates :unique_id, presence: true, uniqueness: true
   validates :title_type, presence: true
   validates :title, presence: true

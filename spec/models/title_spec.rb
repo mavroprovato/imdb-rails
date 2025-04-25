@@ -16,4 +16,6 @@ RSpec.describe Title, type: :model do
   it { should validate_presence_of(:title) }
   it { should validate_presence_of(:original_title) }
   it { should validate_presence_of(:runtime) }
+  it { should have_many(:title_genres) }
+  it { should have_many(:genres) }
 end
