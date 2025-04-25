@@ -1,5 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe TitleGenre, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  subject(:title_genre) { create(:title_genre) }
+
+  it { is_expected.to validate_presence_of(:title_id) }
+  it { is_expected.to validate_presence_of(:genre_id) }
 end
