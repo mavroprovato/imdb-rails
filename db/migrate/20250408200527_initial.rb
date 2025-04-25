@@ -26,7 +26,7 @@ class Initial < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    create_table :title_genres do |t|
+    create_table :title_genres, primary_key: [ :title_id, :genre_id ] do |t|
       t.belongs_to :title, null: false, foreign_key: true, index: true
       t.belongs_to :genre, null: false, foreign_key: true, index: true
 

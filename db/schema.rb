@@ -35,7 +35,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.index ["unique_id"], name: "index_people_on_unique_id", unique: true
   end
 
-  create_table "title_genres", force: :cascade do |t|
+  create_table "title_genres", primary_key: ["title_id", "genre_id"], force: :cascade do |t|
     t.bigint "title_id", null: false
     t.bigint "genre_id", null: false
     t.datetime "created_at", null: false
