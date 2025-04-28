@@ -70,7 +70,7 @@ group :development, :test do
   gem "rspec-rails"
 
   # One-liners to test common Rails functionality
-  gem "shoulda-matchers", "~> 6.0"
+  gem "shoulda-matchers", "~> 6.5"
 end
 
 gem "activerecord-import", "~> 2.1"
