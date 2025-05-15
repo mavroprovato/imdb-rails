@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Title, type: :model do
+RSpec.describe Title do
   subject(:title) { create(:title) }
 
   it { is_expected.to validate_presence_of(:unique_id) }

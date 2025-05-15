@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe TitleGenre, type: :model do
+RSpec.describe TitleGenre do
   subject(:title_genre) { create(:title_genre) }
 
   it { is_expected.to belong_to(:title) }
