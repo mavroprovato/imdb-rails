@@ -45,15 +45,15 @@ gem "thruster", require: false
 # Add Faraday for HTTP requests
 gem "faraday", "~> 2.13"
 
+# A library for bulk insertion of data into your database using ActiveRecord [https://github.com/zdennis/activerecord-import]
+gem "activerecord-import", "~> 2.1"
+
 group :development do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 
   # Rubocop for static analysis [https://github.com/rubocop/rubocop]
   gem "rubocop"
-
-  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
-  gem "rubocop-rails-omakase", require: false
 
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
@@ -69,8 +69,20 @@ group :development, :test do
   # Rspec for testing [https://rspec.info/]
   gem "rspec-rails"
 
+  # Code style checking for factory_bot files [https://github.com/rubocop/rubocop-factory_bot]
+  gem "rubocop-factory_bot", "~> 2.27"
+
+  # A RuboCop extension focused on enforcing Rails best practices and coding conventions [https://github.com/rubocop/rubocop-rails]
+  gem "rubocop-rails", "~> 2.31"
+
+  # Code style checking for RSpec files [https://github.com/rubocop/rubocop-rspec]
+  gem "rubocop-rspec", "~> 3.6"
+
+  # Code style checking for Rails-related RSpec files [https://github.com/rubocop/rubocop-rspec_rails]
+  gem "rubocop-rspec_rails", "~> 2.31"
+
   # One-liners to test common Rails functionality
   gem "shoulda-matchers", "~> 6.0"
 end
 
-gem "activerecord-import", "~> 2.1"
+
