@@ -3,12 +3,12 @@
 module Loaders
   class GenreLoader < BaseLoader
     def initialize
+      super
       @data = Set.new
     end
 
     def load_data(batch_size = 100_000)
       super
-
       Genre.import @data.to_a, validate: false, on_duplicate_key_ignore: true
     end
 
