@@ -2,7 +2,7 @@
 
 class Downloader
   BASE_URL = "https://datasets.imdbws.com"
-  DOWNLOAD_DIR = "#{Rails.root}/tmp"
+  DOWNLOAD_DIR = Rails.root.join("/tmp")
 
   def initialize(filename)
     @filename = filename
