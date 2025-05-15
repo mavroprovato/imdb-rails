@@ -2,7 +2,7 @@
 
 class Initial < ActiveRecord::Migration[8.0]
   def change
-    execute <<~SQL
+    execute <<~SQL.squish
       CREATE TYPE title_type AS
       ENUM ('movie', 'short', 'tvEpisode', 'tvMiniSeries', 'tvMovie', 'tvPilot', 'tvSeries', 'tvShort', 'tvSpecial', 'video', 'videoGame');
     SQL
