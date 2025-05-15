@@ -11,7 +11,7 @@ class Downloader
   def download
     return local_filename unless should_download?
 
-    puts "Downloading #{filename}"
+    Rails.logger.info "Downloading #{filename}"
     response = Faraday.get("#{BASE_URL}/#{filename}")
     File.open(local_filename, mode: "wb") do |file|
       file.write(response.body)
@@ -19,7 +19,7 @@ class Downloader
     File.open(local_etag_filename, mode: "wt") do |file|
       file.write(response.headers["etag"])
     end
-    puts "#{filename} downloaded"
+    Rails.logger.info "#{filename} downloaded"
     local_filename
   end
 

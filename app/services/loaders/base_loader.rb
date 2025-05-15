@@ -12,11 +12,11 @@ module Loaders
         if index % batch_size == 0
           process_data(batch)
           batch = []
-          puts "Processed #{index} rows"
+          Rails.logger.info "Processed #{index} rows"
         end
       end
       process_data(batch)
-      puts "Processed all rows"
+      Rails.logger.info "Processed all rows"
     end
 
     protected
