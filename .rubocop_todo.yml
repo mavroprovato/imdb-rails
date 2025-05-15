@@ -89,15 +89,6 @@ Style/Documentation:
     - 'config/application.rb'
     - 'db/migrate/20250408200527_initial.rb'
 
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle, AllowedMethods, AllowedPatterns.
-# SupportedStyles: predicate, comparison
-Style/NumericPredicate:
-  Exclude:
-    - 'spec/**/*'
-    - 'app/services/loaders/base_loader.rb'
-
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 Style/PerlBackrefs:

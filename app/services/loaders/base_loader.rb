@@ -6,10 +6,10 @@ module Loaders
       local_filename = Downloader.new(filename).download
       batch = []
       Zlib::GzipReader.new(File.open(local_filename, mode: "rb")).each_line.with_index do |line, index|
-        next if index == 0
+        next if index.zero?
 
         batch << line.split("\t")
-        if index % batch_size == 0
+        if (index % batch_size).zero?
           process_data(batch)
           batch = []
           Rails.logger.info "Processed #{index} rows"
