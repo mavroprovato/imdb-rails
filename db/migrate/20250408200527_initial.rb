@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Initial < ActiveRecord::Migration[8.0]
-  def change
+  def up
     execute <<~SQL.squish
       CREATE TYPE title_type AS
       ENUM ('movie', 'short', 'tvEpisode', 'tvMiniSeries', 'tvMovie', 'tvPilot', 'tvSeries', 'tvShort', 'tvSpecial', 'video', 'videoGame');
@@ -43,5 +43,15 @@ class Initial < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
+  end
+
+  def down
+    drop_table :people
+    drop_table :title_genres
+    drop_table :titles
+    drop_table :genres
+    execute <<~SQL.squish
+      DROP TYPE title_type;
+    SQL
   end
 end
