@@ -2,8 +2,7 @@
 
 namespace :imdb do
   desc "Load data from the IMDB dataset"
-  task loaddata: :environment do
-    etl = Etl.new
-    etl.perform
+  task load_data: :environment do
+    Etl.new.perform
   end
 end
