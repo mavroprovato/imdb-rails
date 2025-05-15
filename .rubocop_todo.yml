@@ -184,14 +184,6 @@ Style/StringLiterals:
     - 'test/application_system_test_case.rb'
     - 'test/test_helper.rb'
 
-# Offense count: 5
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: .
-# SupportedStyles: percent, brackets
-Style/SymbolArray:
-  EnforcedStyle: percent
-  MinSize: 13
-
 # Offense count: 14
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: WordRegex.
@@ -199,13 +191,3 @@ Style/SymbolArray:
 Style/WordArray:
   EnforcedStyle: percent
   MinSize: 12
-
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: Max, AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, AllowedPatterns, SplitStrings.
-# URISchemes: http, https
-Layout/LineLength:
-  Exclude:
-    - 'bin/bundle'
-    - 'db/queue_schema.rb'
-    - 'db/schema.rb'

@@ -8,7 +8,7 @@ module Loaders
 
     def process_data(batch)
       Person.import person_data(batch), validate: false, on_duplicate_key_update: {
-        conflict_target: [ :unique_id ], columns: [ :name, :birth_year, :death_year ]
+        conflict_target: [ :unique_id ], columns: %i[name birth_year death_year]
       }
     end
 
