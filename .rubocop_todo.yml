@@ -21,12 +21,6 @@ Layout/SpaceInsideArrayLiteralBrackets:
     - 'db/queue_schema.rb'
     - 'test/application_system_test_case.rb'
 
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-Layout/SpaceInsidePercentLiteralDelimiters:
-  Exclude:
-    - 'Gemfile'
-
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle.
