@@ -7,7 +7,7 @@ class Title < ApplicationRecord
     video_game: "videoGame"
   }
 
-  has_many :title_genres
+  has_many :title_genres, dependent: :destroy
   has_many :genres, through: :title_genres
 
   validates :unique_id, presence: true, uniqueness: true
