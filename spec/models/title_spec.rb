@@ -6,6 +6,7 @@ RSpec.describe Title, type: :model do
   it { is_expected.to validate_presence_of(:unique_id) }
   it { is_expected.to validate_uniqueness_of(:unique_id) }
   it { is_expected.to validate_presence_of(:title_type) }
+
   it {
     is_expected.to define_enum_for(:title_type).with_values({
       movie: "movie", short: "short", tv_episode: "tvEpisode", tv_mini_series: "tvMiniSeries", tv_movie: "tvMovie",
@@ -13,6 +14,7 @@ RSpec.describe Title, type: :model do
       video_game: "videoGame"
     }).backed_by_column_of_type(:enum)
   }
+
   it { is_expected.to validate_presence_of(:title) }
   it { is_expected.to validate_presence_of(:original_title) }
   it { is_expected.to validate_presence_of(:runtime) }
