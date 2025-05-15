@@ -7,7 +7,7 @@ module Loaders
     end
 
     def load_data(batch_size = 100_000)
-      super(batch_size)
+      super
 
       Genre.import @data.to_a, validate: false, on_duplicate_key_ignore: true
     end
