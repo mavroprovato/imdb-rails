@@ -32,11 +32,9 @@ class Downloader
   end
 
   def local_etag
-    begin
-      File.read(local_etag_filename).chomp
-    rescue Errno::ENOENT
-      nil
-    end
+    File.read(local_etag_filename).chomp
+  rescue Errno::ENOENT
+    nil
   end
 
   def should_download?
