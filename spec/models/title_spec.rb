@@ -8,7 +8,7 @@ RSpec.describe Title, type: :model do
   it { is_expected.to validate_presence_of(:title_type) }
 
   it {
-    is_expected.to define_enum_for(:title_type).with_values({
+    expect(title).to define_enum_for(:title_type).with_values({
       movie: "movie", short: "short", tv_episode: "tvEpisode", tv_mini_series: "tvMiniSeries", tv_movie: "tvMovie",
       tv_pilot: "tvPilot", tv_series: "tvSeries", tv_short: "tvShort", tv_special: "tvSpecial", video: "video",
       video_game: "videoGame"
