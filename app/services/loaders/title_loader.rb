@@ -36,13 +36,11 @@ module Loaders
     def titles(batch)
       Title.where(
         unique_id: batch.map { |row| row[0] }
-      ).pluck(:id, :unique_id).each_with_object({}) do |(id, unique_id), hash|
-        hash[unique_id] = id
-      end
+      ).pluck(:id, :unique_id).each_with_object({}) { |(id, unique_id), hash| hash[unique_id] = id }
     end
 
     def genres
-      @genres ||= Genre.all.pluck(:id, :name).each_with_object({}) { |(id, name), hash| hash[name] = id }
+      @genres ||= Genre.pluck(:id, :name).each_with_object({}) { |(id, name), hash| hash[name] = id }
     end
 
     def title_genre_data(batch)
