@@ -18,7 +18,7 @@ class Initial < ActiveRecord::Migration[8.0]
       t.column :title_type, :title_type, null: false
       t.string :title, null: false
       t.string :original_title, null: false
-      t.boolean :adult, null: false
+      t.boolean :adult, null: false, default: false
       t.integer :start_year
       t.integer :end_year
       t.integer :runtime, null: false
@@ -26,11 +26,13 @@ class Initial < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    create_table :title_genres, primary_key: [ :title_id, :genre_id ] do |t|
+    create_table :title_genres do |t|
       t.references :title, null: false, foreign_key: true, index: true
       t.references :genre, null: false, foreign_key: true, index: true
 
       t.timestamps
+
+      t.index %i[title_id genre_id], unique: true
     end
 
     create_table :people do |t|

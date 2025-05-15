@@ -36,12 +36,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.index ["unique_id"], name: "index_people_on_unique_id", unique: true
   end
 
-  create_table "title_genres", primary_key: ["title_id", "genre_id"], force: :cascade do |t|
+  create_table "title_genres", force: :cascade do |t|
     t.bigint "title_id", null: false
     t.bigint "genre_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["genre_id"], name: "index_title_genres_on_genre_id"
+    t.index ["title_id", "genre_id"], name: "index_title_genres_on_title_id_and_genre_id", unique: true
     t.index ["title_id"], name: "index_title_genres_on_title_id"
   end
 
@@ -50,7 +51,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.enum "title_type", null: false, enum_type: "title_type"
     t.string "title", null: false
     t.string "original_title", null: false
-    t.boolean "adult", null: false
+    t.boolean "adult", default: false, null: false
     t.integer "start_year"
     t.integer "end_year"
     t.integer "runtime", null: false
