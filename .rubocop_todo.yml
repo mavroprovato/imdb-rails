@@ -21,10 +21,11 @@ Layout/SpaceInsideArrayLiteralBrackets:
     - 'db/queue_schema.rb'
     - 'test/application_system_test_case.rb'
 
-# Offense count: 2
+# Offense count: 3
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes, Max.
 Metrics/AbcSize:
   Exclude:
+    - 'app/services/loaders/base_loader.rb'
     - 'app/services/downloader.rb'
     - 'db/migrate/20250408200527_initial.rb'
 
