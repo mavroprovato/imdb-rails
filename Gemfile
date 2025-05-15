@@ -69,6 +69,9 @@ group :development, :test do
   # Rspec for testing [https://rspec.info/]
   gem "rspec-rails"
 
+  # An extension of RuboCop focused on code performance checks [https://github.com/rubocop/rubocop-performance]
+  gem "rubocop-performance", "~> 1.25"
+
   # Code style checking for factory_bot files [https://github.com/rubocop/rubocop-factory_bot]
   gem "rubocop-factory_bot", "~> 2.27"
 
@@ -84,5 +87,3 @@ group :development, :test do
   # One-liners to test common Rails functionality
   gem "shoulda-matchers", "~> 6.0"
 end
-
-
