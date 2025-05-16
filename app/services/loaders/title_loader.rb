@@ -19,19 +19,21 @@ module Loaders
 
     private
 
+    def transform_row(row)
+      {
+        unique_id: row[0],
+        title_type: row[1],
+        title: row[2],
+        original_title: row[3],
+        adult: row[4] == "1",
+        start_year: row[5] == '\N' ? nil : row[5].to_i,
+        end_year: row[6] == '\N' ? nil : row[6].to_i,
+        runtime: row[7].to_i
+      }
+    end
+
     def title_data(batch)
-      batch.map do |row|
-        {
-          unique_id: row[0],
-          title_type: row[1],
-          title: row[2],
-          original_title: row[3],
-          adult: row[4] == "1",
-          start_year: row[5] == '\N' ? nil : row[5].to_i,
-          end_year: row[6] == '\N' ? nil : row[6].to_i,
-          runtime: row[7].to_i
-        }
-      end
+      batch.map { |row| transform_row(row) }
     end
 
     def titles(batch)

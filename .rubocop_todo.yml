@@ -50,8 +50,6 @@ Metrics/MethodLength:
   Exclude:
     - 'app/services/downloader.rb'
     - 'app/services/loaders/base_loader.rb'
-    - 'app/services/loaders/title_loader.rb'
-    - 'bin/bundle'
     - 'db/migrate/20250408200527_initial.rb'
 
 # Offense count: 1
