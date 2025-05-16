@@ -10,15 +10,9 @@
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes, Max.
 Metrics/AbcSize:
   Exclude:
-    - 'app/services/loaders/base_loader.rb'
     - 'app/services/downloader.rb'
+    - 'app/services/loaders/base_loader.rb'
     - 'db/migrate/20250408200527_initial.rb'
-
-# Offense count: 1
-# Configuration parameters: AllowedMethods, AllowedPatterns, Max.
-Metrics/CyclomaticComplexity:
-  Exclude:
-    - 'bin/bundle'
 
 # Offense count: 5
 # Configuration parameters: CountComments, Max, CountAsOne, AllowedMethods, AllowedPatterns.
@@ -27,9 +21,3 @@ Metrics/MethodLength:
     - 'app/services/downloader.rb'
     - 'app/services/loaders/base_loader.rb'
     - 'db/migrate/20250408200527_initial.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/BlockComments:
-  Exclude:
-    - 'spec/spec_helper.rb'
