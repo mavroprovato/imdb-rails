@@ -11,7 +11,7 @@ module Loaders
 
     def process_data(batch)
       Title.import title_data(batch), validate: false, on_duplicate_key_update: {
-        conflict_target: [ :unique_id ],
+        conflict_target: [:unique_id],
         columns: %i[title_type title original_title adult start_year end_year runtime]
       }
       TitleGenre.import title_genre_data(batch), validate: false, on_duplicate_key_ignore: true

@@ -6,21 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 72
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBrackets.
-# SupportedStyles: space, no_space, compact
-# SupportedStylesForEmptyBrackets: space, no_space
-Layout/SpaceInsideArrayLiteralBrackets:
-  Exclude:
-    - 'app/models/title_genre.rb'
-    - 'app/services/loaders/people_loader.rb'
-    - 'app/services/loaders/title_loader.rb'
-    - 'config/environments/production.rb'
-    - 'db/migrate/20250408200527_initial.rb'
-    - 'db/queue_schema.rb'
-    - 'test/application_system_test_case.rb'
-
 # Offense count: 3
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes, Max.
 Metrics/AbcSize:
