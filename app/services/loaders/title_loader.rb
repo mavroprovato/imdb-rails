@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Loaders
+  # Loads titles to the database
   class TitleLoader < BaseLoader
     protected
 

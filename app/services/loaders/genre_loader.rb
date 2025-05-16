@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Loaders
+  # Loads genres to the database
   class GenreLoader < BaseLoader
     def initialize
       super

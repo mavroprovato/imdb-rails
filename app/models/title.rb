@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The title model
 class Title < ApplicationRecord
   enum :title_type, {
     movie: "movie", short: "short", tv_episode: "tvEpisode", tv_mini_series: "tvMiniSeries", tv_movie: "tvMovie",

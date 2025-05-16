@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Loaders
+  # Loads people to the database
   class PeopleLoader < BaseLoader
     def filename
       "name.basics.tsv.gz"

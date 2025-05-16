@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Loaders
+  # Base class for loading data
   class BaseLoader
     def load_data(batch_size = 100_000)
       local_filename = Downloader.new(filename).download

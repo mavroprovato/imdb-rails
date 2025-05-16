@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The title genre join model
 class TitleGenre < ApplicationRecord
   belongs_to :title
   belongs_to :genre

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The initial database migration
 class Initial < ActiveRecord::Migration[8.0]
   def up
     execute <<~SQL.squish

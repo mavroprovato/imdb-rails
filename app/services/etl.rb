@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Performs the ETL procedure
 class Etl
   def perform
     Loaders::GenreLoader.new.load_data
