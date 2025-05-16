@@ -14,15 +14,6 @@ Metrics/AbcSize:
     - 'app/services/downloader.rb'
     - 'db/migrate/20250408200527_initial.rb'
 
-# Offense count: 2
-# Configuration parameters: CountComments, Max, CountAsOne, AllowedMethods, AllowedPatterns.
-# AllowedMethods: refine
-Metrics/BlockLength:
-  Exclude:
-    - '**/*.gemspec'
-    - 'db/queue_schema.rb'
-    - 'db/schema.rb'
-
 # Offense count: 1
 # Configuration parameters: AllowedMethods, AllowedPatterns, Max.
 Metrics/CyclomaticComplexity:
@@ -38,63 +29,7 @@ Metrics/MethodLength:
     - 'db/migrate/20250408200527_initial.rb'
 
 # Offense count: 1
-# Configuration parameters: AllowedMethods, AllowedPatterns, Max.
-Metrics/PerceivedComplexity:
-  Exclude:
-    - 'bin/bundle'
-
-# Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 Style/BlockComments:
   Exclude:
     - 'spec/spec_helper.rb'
-
-# Offense count: 428
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Exclude:
-    - 'Gemfile'
-    - 'Rakefile'
-    - 'app/mailers/application_mailer.rb'
-    - 'app/models/title.rb'
-    - 'app/services/downloader.rb'
-    - 'app/services/loaders/base_loader.rb'
-    - 'app/services/loaders/genre_loader.rb'
-    - 'app/services/loaders/people_loader.rb'
-    - 'app/services/loaders/title_loader.rb'
-    - 'bin/brakeman'
-    - 'bin/bundle'
-    - 'bin/dev'
-    - 'bin/importmap'
-    - 'bin/jobs'
-    - 'bin/kamal'
-    - 'bin/rails'
-    - 'bin/rake'
-    - 'bin/rubocop'
-    - 'bin/setup'
-    - 'bin/thrust'
-    - 'config.ru'
-    - 'config/application.rb'
-    - 'config/boot.rb'
-    - 'config/environment.rb'
-    - 'config/environments/development.rb'
-    - 'config/environments/production.rb'
-    - 'config/environments/test.rb'
-    - 'config/importmap.rb'
-    - 'config/initializers/assets.rb'
-    - 'config/puma.rb'
-    - 'config/routes.rb'
-    - 'db/cable_schema.rb'
-    - 'db/cache_schema.rb'
-    - 'db/queue_schema.rb'
-    - 'db/schema.rb'
-    - 'lib/tasks/imdb.rake'
-    - 'spec/factories/genres.rb'
-    - 'spec/factories/people.rb'
-    - 'spec/factories/titles.rb'
-    - 'spec/models/title_spec.rb'
-    - 'spec/rails_helper.rb'
-    - 'test/application_system_test_case.rb'
-    - 'test/test_helper.rb'

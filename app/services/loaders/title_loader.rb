@@ -6,7 +6,7 @@ module Loaders
     protected
 
     def filename
-      "title.basics.tsv.gz"
+      'title.basics.tsv.gz'
     end
 
     def process_data(batch)
@@ -25,7 +25,7 @@ module Loaders
         title_type: row[1],
         title: row[2],
         original_title: row[3],
-        adult: row[4] == "1",
+        adult: row[4] == '1',
         start_year: row[5] == '\N' ? nil : row[5].to_i,
         end_year: row[6] == '\N' ? nil : row[6].to_i,
         runtime: row[7].to_i
@@ -51,7 +51,7 @@ module Loaders
       batch.each_with_object([]) do |row, array|
         next if row[8].chomp == '\N'
 
-        array << row[8].chomp.split(",").map { |name| { title_id: title_map[row[0]], genre_id: genres[name] } }
+        array << row[8].chomp.split(',').map { |name| { title_id: title_map[row[0]], genre_id: genres[name] } }
       end.flatten
     end
   end

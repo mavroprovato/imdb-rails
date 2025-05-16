@@ -16,14 +16,14 @@ module Loaders
     protected
 
     def filename
-      "title.basics.tsv.gz"
+      'title.basics.tsv.gz'
     end
 
     def process_data(batch)
       @data |= batch.each_with_object(Set.new) do |row, set|
         next if row[8].chomp == '\N'
 
-        row[8].chomp.split(",").each { |name| set << { name: } }
+        row[8].chomp.split(',').each { |name| set << { name: } }
       end
     end
   end

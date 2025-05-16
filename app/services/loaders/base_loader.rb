@@ -6,7 +6,7 @@ module Loaders
     def load_data(batch_size = 100_000)
       local_filename = Downloader.new(filename).download
       batch = []
-      Zlib::GzipReader.new(File.open(local_filename, mode: "rb")).each_line.with_index do |line, index|
+      Zlib::GzipReader.new(File.open(local_filename, mode: 'rb')).each_line.with_index do |line, index|
         next if index.zero?
 
         batch << line.split("\t")
@@ -17,7 +17,7 @@ module Loaders
         end
       end
       process_data(batch)
-      Rails.logger.info "Processed all rows"
+      Rails.logger.info 'Processed all rows'
     end
 
     protected

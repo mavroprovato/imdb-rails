@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :person do
-    unique_id { "MyString" }
-    name { "MyString" }
+    unique_id { 'MyString' }
+    name { 'MyString' }
     birth_year { 1 }
     death_year { 1 }
   end

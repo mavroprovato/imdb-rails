@@ -4,7 +4,7 @@ module Loaders
   # Loads people to the database
   class PeopleLoader < BaseLoader
     def filename
-      "name.basics.tsv.gz"
+      'name.basics.tsv.gz'
     end
 
     def process_data(batch)
