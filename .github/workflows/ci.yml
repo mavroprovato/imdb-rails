@@ -81,4 +81,4 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
-        run: bin/rails spec:prepare spec
+        run: bin/rails db:create db:migrate spec
