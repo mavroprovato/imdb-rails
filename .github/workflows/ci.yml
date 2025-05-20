@@ -60,8 +60,8 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: imdb
+          POSTGRES_PASSWORD: imdb
         ports:
           - 5432:5432
 
