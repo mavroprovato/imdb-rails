@@ -2,6 +2,7 @@
 
 # The initial database migration
 class Initial < ActiveRecord::Migration[8.0]
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def up
     execute <<~SQL.squish
       CREATE TYPE title_type AS
@@ -45,6 +46,7 @@ class Initial < ActiveRecord::Migration[8.0]
       t.timestamps
     end
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def down
     drop_table :people
