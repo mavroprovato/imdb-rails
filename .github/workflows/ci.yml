@@ -72,4 +72,4 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
-        run: bin/rails bin/rails db:setup spec
+        run: bin/rails db:setup spec
