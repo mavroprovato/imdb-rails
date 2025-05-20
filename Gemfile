@@ -87,5 +87,5 @@ group :development, :test do
   gem 'rubocop-rspec_rails', '~> 2.31'
 
   # One-liners to test common Rails functionality
-  gem 'shoulda-matchers', '~> 6.0'
+  gem 'shoulda-matchers', '~> 6.5'
 end
