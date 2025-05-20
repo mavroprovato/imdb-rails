@@ -12,15 +12,7 @@ class Downloader
   def download
     return local_filename unless should_download?
 
-    Rails.logger.info "Downloading #{filename}"
-    response = Faraday.get("#{BASE_URL}/#{filename}")
-    File.open(local_filename, mode: 'wb') do |file|
-      file.write(response.body)
-    end
-    File.open(local_etag_filename, mode: 'wt') do |file|
-      file.write(response.headers['etag'])
-    end
-    Rails.logger.info "#{filename} downloaded"
+    save_local_etag(download_file)
     local_filename
   end
 
@@ -32,10 +24,20 @@ class Downloader
     Faraday.head("#{BASE_URL}/#{filename}").headers['etag']
   end
 
+  def local_etag_filename
+    "#{DOWNLOAD_DIR}/#{filename}.etag"
+  end
+
   def local_etag
     File.read(local_etag_filename).chomp
   rescue Errno::ENOENT
     nil
+  end
+
+  def save_local_etag(etag)
+    File.open(local_etag_filename, mode: 'wt') do |file|
+      file.write(etag)
+    end
   end
 
   def should_download?
@@ -46,7 +48,13 @@ class Downloader
     "#{DOWNLOAD_DIR}/#{filename}"
   end
 
-  def local_etag_filename
-    "#{DOWNLOAD_DIR}/#{filename}.etag"
+  def download_file
+    Rails.logger.info "Downloading #{filename}"
+    response = Faraday.get("#{BASE_URL}/#{filename}")
+    File.open(local_filename, mode: 'wb') do |file|
+      file.write(response.body)
+    end
+    Rails.logger.info "#{filename} downloaded"
+    response.headers['etag']
   end
 end
