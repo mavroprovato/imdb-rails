@@ -81,5 +81,4 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
-        run: bin/rails spec
-
+        run: bin/rails spec:prepare spec
