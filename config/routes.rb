@@ -9,4 +9,5 @@ Rails.application.routes.draw do
 
   # API controllers
   get '/genres', to: 'genres#index'
+  get '/genres/:id', to: 'genres#show'
 end

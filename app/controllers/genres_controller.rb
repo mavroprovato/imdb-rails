@@ -9,6 +9,10 @@ class GenresController < ApplicationController
     render json: paginated_results
   end
 
+  def show
+    render json: model.find(params[:id])
+  end
+
   protected
 
   def model
