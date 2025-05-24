@@ -8,7 +8,7 @@ class BaseCrudController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def index
-    render json: paginated_results
+    render json: { total:, results: }
   end
 
   def show
@@ -25,13 +25,6 @@ class BaseCrudController < ApplicationController
 
   def record_not_found
     render json: { errors: ["#{model} with id #{params[:id]} not found"] }, status: :not_found
-  end
-
-  def paginated_results
-    {
-      total:,
-      results:
-    }
   end
 
   def results
