@@ -5,6 +5,6 @@ namespace :imdb do
   task load_data: :environment do
     Rails.logger = Logger.new($stdout)
     Rails.logger.level = Logger::INFO
-    Etl.new.perform
+    Etl::Etl.new.perform
   end
 end
