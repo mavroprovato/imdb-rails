@@ -8,8 +8,6 @@ Rails.application.routes.draw do
   get 'up' => 'rails/health#show', as: :rails_health_check
 
   # API controllers
-  get '/genres', to: 'genres#index'
-  get '/genres/:id', to: 'genres#show'
-  get '/titles', to: 'titles#index'
-  get '/titles/:id', to: 'titles#show'
+  resources :genres, only: %i[index show]
+  resources :titles, only: %i[index show]
 end
