@@ -2,7 +2,6 @@
 
 # The titles controller
 class TitlesController < BaseCrudController
-
   protected
 
   def model

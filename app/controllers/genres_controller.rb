@@ -2,7 +2,6 @@
 
 # The genres controller
 class GenresController < BaseCrudController
-
   protected
 
   def model

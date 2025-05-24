@@ -2,7 +2,6 @@
 
 # Base controller for CRUD API endpoints
 class BaseCrudController < ApplicationController
-
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def index

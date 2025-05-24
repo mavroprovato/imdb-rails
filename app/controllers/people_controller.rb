@@ -2,7 +2,6 @@
 
 # The people controller
 class PeopleController < BaseCrudController
-
   protected
 
   def model
