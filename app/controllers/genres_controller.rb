@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# The genre controller
+# The genres controller
 class GenresController < BaseCrudController
 
   protected
