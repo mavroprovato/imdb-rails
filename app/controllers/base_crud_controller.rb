@@ -32,18 +32,22 @@ class BaseCrudController < ApplicationController
     model.count
   end
 
-  def list_query
-    return model if include.empty?
-
-    model.includes(*include)
+  def results
+    paginate_query order_query list_query
   end
 
-  def results
-    Paginator.new(params['page'], params['per_page']).paginate_query order_query list_query
+  def paginate_query(query)
+    Paginator.new(params['page'], params['per_page']).paginate_query(query)
   end
 
   def order_query(query)
     query.order(:id)
+  end
+
+  def list_query
+    return model if include.empty?
+
+    model.includes(*include)
   end
 
   def record_not_found
