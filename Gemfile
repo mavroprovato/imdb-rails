@@ -50,6 +50,9 @@ gem 'faraday', '~> 2.13'
 # A library for bulk insertion of data into your database using ActiveRecord [https://github.com/zdennis/activerecord-import]
 gem 'activerecord-import', '~> 2.1'
 
+# Simple, Fast, and Declarative Serialization Library for Ruby [https://github.com/procore-oss/blueprinter]
+gem 'blueprinter', '~> 1.1.2'
+
 group :development do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem 'brakeman', require: false

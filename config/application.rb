@@ -23,8 +23,10 @@ module ImdbRails
     #
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
-    #
-    # config.time_zone = "Central Time (US & Canada)"
-    # config.eager_load_paths << Rails.root.join("extras")
+
+    # Blueprinter configuration
+    Blueprinter.configure do |config|
+      config.sort_fields_by = :definition
+    end
   end
 end

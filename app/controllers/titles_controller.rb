@@ -7,4 +7,8 @@ class TitlesController < BaseCrudController
   def model
     Title
   end
+
+  def include
+    [:genres]
+  end
 end

@@ -5,11 +5,11 @@ class BaseCrudController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def index
-    render json: { total:, results: }
+    render json: { total:, results: blueprint.render_as_hash(results) }
   end
 
   def show
-    render json: model.find(params[:id])
+    render json: blueprint.render(model.find(params[:id]))
   end
 
   protected
@@ -18,21 +18,35 @@ class BaseCrudController < ApplicationController
     raise NotImplementedError, "#{self.class} must implement the '#{__method__}' method"
   end
 
+  def include
+    []
+  end
+
+  def blueprint
+    "#{model}Blueprint".constantize
+  end
+
   private
-
-  def record_not_found
-    render json: { errors: ["#{model} with id #{params[:id]} not found"] }, status: :not_found
-  end
-
-  def results
-    Paginator.new(params['page'], params['per_page']).paginate_query order_query model
-  end
 
   def total
     model.count
   end
 
+  def list_query
+    return model if include.empty?
+
+    model.includes(*include)
+  end
+
+  def results
+    Paginator.new(params['page'], params['per_page']).paginate_query order_query list_query
+  end
+
   def order_query(query)
     query.order(:id)
+  end
+
+  def record_not_found
+    render json: { errors: ["#{model} with id #{params[:id]} not found"] }, status: :not_found
   end
 end
