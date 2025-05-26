@@ -64,6 +64,8 @@ class Initial < ActiveRecord::Migration[8.0]
     drop_table :people
     drop_table :title_genres
     drop_table :titles
+    drop_table :languages
+    drop_table :regions
     drop_table :genres
     execute <<~SQL.squish
       DROP TYPE title_type;
