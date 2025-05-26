@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   # API controllers
   resources :genres, only: %i[index show]
+  resources :regions, only: %i[index show]
   resources :titles, only: %i[index show]
   resources :people, only: %i[index show]
 end
