@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Etl
-  LOADERS = [Loaders::GenreLoader, Loaders::TitleLoader, Loaders::PeopleLoader].freeze
+  LOADERS = [Loaders::GenreLoader, Loaders::RegionLoader, Loaders::TitleLoader, Loaders::PeopleLoader].freeze
   # Performs the ETL procedure
   class Etl
     def perform

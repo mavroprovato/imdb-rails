@@ -4,7 +4,7 @@ module Etl
   # Helper class which downloads dump files to be imported to the database
   class Downloader
     BASE_URL = 'https://datasets.imdbws.com'
-    DOWNLOAD_DIR = Rails.root.join('/tmp')
+    DOWNLOAD_DIR = Rails.root.join('tmp')
 
     def initialize(filename)
       @filename = filename
