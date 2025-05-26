@@ -26,6 +26,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.index ["name"], name: "index_genres_on_name", unique: true
   end
 
+  create_table "languages", force: :cascade do |t|
+    t.string "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "people", force: :cascade do |t|
     t.string "unique_id", null: false
     t.string "name", null: false

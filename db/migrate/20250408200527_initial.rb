@@ -21,6 +21,12 @@ class Initial < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
+    create_table :languages do |t|
+      t.string :code
+
+      t.timestamps
+    end
+
     create_table :titles do |t|
       t.string :unique_id, null: false, index: { unique: true }
       t.column :title_type, :title_type, null: false
