@@ -49,6 +49,21 @@ class Initial < ActiveRecord::Migration[8.0]
       t.index %i[title_id genre_id], unique: true
     end
 
+    create_table :title_aliases do |t|
+      t.references :title, null: false, foreign_key: true
+      t.references :region, null: false, foreign_key: true
+      t.references :language, null: false, foreign_key: true
+
+      t.integer :ordering, null: false
+      t.string :alias, null: false
+      t.string :alias_attributes, null: false, default: '[]'
+      t.boolean :originalTitle, null: false, default: true
+
+      t.timestamps
+
+      t.index %i[title_id alias], unique: true
+    end
+
     create_table :people do |t|
       t.string :unique_id, null: false, index: { unique: true }
       t.string :name, null: false

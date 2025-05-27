@@ -49,6 +49,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.index ["code"], name: "index_regions_on_code", unique: true
   end
 
+  create_table "title_aliases", force: :cascade do |t|
+    t.bigint "title_id", null: false
+    t.bigint "region_id", null: false
+    t.bigint "language_id", null: false
+    t.integer "ordering", null: false
+    t.string "alias", null: false
+    t.string "alias_attributes", default: "[]", null: false
+    t.boolean "originalTitle", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["language_id"], name: "index_title_aliases_on_language_id"
+    t.index ["region_id"], name: "index_title_aliases_on_region_id"
+    t.index ["title_id", "alias"], name: "index_title_aliases_on_title_id_and_alias", unique: true
+    t.index ["title_id"], name: "index_title_aliases_on_title_id"
+  end
+
   create_table "title_genres", force: :cascade do |t|
     t.bigint "title_id", null: false
     t.bigint "genre_id", null: false
@@ -73,6 +89,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.index ["unique_id"], name: "index_titles_on_unique_id", unique: true
   end
 
+  add_foreign_key "title_aliases", "languages"
+  add_foreign_key "title_aliases", "regions"
+  add_foreign_key "title_aliases", "titles"
   add_foreign_key "title_genres", "genres"
   add_foreign_key "title_genres", "titles"
 end
