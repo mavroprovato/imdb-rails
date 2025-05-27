@@ -3,5 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Language do
-  pending "add some examples to (or delete) #{__FILE__}"
+  subject(:language) { create(:language) }
+
+  it { is_expected.to validate_presence_of(:code) }
+  it { is_expected.to validate_uniqueness_of(:code) }
 end
