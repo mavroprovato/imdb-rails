@@ -2,9 +2,9 @@
 
 FactoryBot.define do
   factory :person do
-    unique_id { 'MyString' }
-    name { 'MyString' }
-    birth_year { 1 }
-    death_year { 1 }
+    sequence(:unique_id) { |n| "nm#{n}" }
+    name { 'John Doe' }
+    birth_year { 1950 }
+    death_year { 2010 }
   end
 end
