@@ -61,8 +61,8 @@ class Initial < ActiveRecord::Migration[8.0]
 
       t.timestamps
 
-      t.index %i[title_id name], unique: true
       t.index %i[title_id ordering], unique: true
+      t.index %i[title_id name], unique: true
     end
 
     create_table :people do |t|
