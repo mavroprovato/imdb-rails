@@ -36,5 +36,5 @@
 # Ignore Rubymine files
 /.idea/*
 
-# SimpleCov reports
-coverage
+# Ignore SimpleCov reports
+/coverage/*
