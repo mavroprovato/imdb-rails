@@ -22,7 +22,7 @@ class Initial < ActiveRecord::Migration[8.0]
     end
 
     create_table :languages do |t|
-      t.string :code
+      t.string :code, index: { unique: true }
 
       t.timestamps
     end
