@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :genre do
-    name { 'Documentary' }
+    sequence(:name) { |n| "Genre #{n}" }
   end
 end
