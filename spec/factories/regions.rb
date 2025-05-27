@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :region do
-    code { 'GR' }
+    sequence(:code) { |n| "CODE#{n}" }
   end
 end
