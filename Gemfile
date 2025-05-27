@@ -91,4 +91,7 @@ group :development, :test do
 
   # One-liners to test common Rails functionality
   gem 'shoulda-matchers', '~> 6.0'
+
+  # Code coverage for Ruby [https://github.com/simplecov-ruby/simplecov]
+  gem 'simplecov', '~> 0.21'
 end
