@@ -57,7 +57,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.integer "ordering", null: false
     t.string "name", null: false
     t.string "alias_attributes", default: "[]", null: false
-    t.boolean "originalTitle", default: true, null: false
+    t.boolean "original_title", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["language_id"], name: "index_title_aliases_on_language_id"

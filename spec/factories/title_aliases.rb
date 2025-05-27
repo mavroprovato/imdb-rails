@@ -7,6 +7,6 @@ FactoryBot.define do
     language
     name { 'Alias' }
     ordering { 1 }
-    originalTitle { true }
+    original_title { true }
   end
 end
