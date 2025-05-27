@@ -90,7 +90,7 @@ group :development, :test do
   gem 'rubocop-rspec_rails', '~> 2.31'
 
   # One-liners to test common Rails functionality
-  gem 'shoulda-matchers', '~> 6.0'
+  gem 'shoulda-matchers', '~> 6.5'
 
   # Code coverage for Ruby [https://github.com/simplecov-ruby/simplecov]
   gem 'simplecov', '~> 0.21'
