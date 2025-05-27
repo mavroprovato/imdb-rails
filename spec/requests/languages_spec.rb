@@ -3,7 +3,17 @@
 require 'rails_helper'
 
 RSpec.describe 'Languages' do
-  describe 'GET /index' do
-    pending "add some examples (or delete) #{__FILE__}"
+  before do
+    create_list(:language, 10)
+  end
+
+  describe 'GET /languages' do
+    before do
+      get '/languages'
+    end
+
+    it 'returns a successful response' do
+      expect(response).to have_http_status :ok
+    end
   end
 end

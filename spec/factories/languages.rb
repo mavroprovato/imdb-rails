@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :language do
-    code { 'el' }
+    sequence(:code) { |n| "code#{n}" }
   end
 end
