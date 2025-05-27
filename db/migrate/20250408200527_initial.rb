@@ -55,13 +55,14 @@ class Initial < ActiveRecord::Migration[8.0]
       t.references :language, null: false, foreign_key: true
 
       t.integer :ordering, null: false
-      t.string :alias, null: false
+      t.string :name, null: false
       t.string :alias_attributes, null: false, default: '[]'
       t.boolean :originalTitle, null: false, default: true
 
       t.timestamps
 
-      t.index %i[title_id alias], unique: true
+      t.index %i[title_id name], unique: true
+      t.index %i[title_id ordering], unique: true
     end
 
     create_table :people do |t|

@@ -54,14 +54,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.bigint "region_id", null: false
     t.bigint "language_id", null: false
     t.integer "ordering", null: false
-    t.string "alias", null: false
+    t.string "name", null: false
     t.string "alias_attributes", default: "[]", null: false
     t.boolean "originalTitle", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["language_id"], name: "index_title_aliases_on_language_id"
     t.index ["region_id"], name: "index_title_aliases_on_region_id"
-    t.index ["title_id", "alias"], name: "index_title_aliases_on_title_id_and_alias", unique: true
+    t.index ["title_id", "name"], name: "index_title_aliases_on_title_id_and_name", unique: true
     t.index ["title_id"], name: "index_title_aliases_on_title_id"
   end
 

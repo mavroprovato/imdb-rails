@@ -7,5 +7,5 @@ class TitleAlias < ApplicationRecord
   belongs_to :language
 
   validates :ordering, presence: true, uniqueness: { scope: :title_id }
-  validates :alias, presence: true
+  validates :name, presence: true, uniqueness: { scope: :title_id }
 end

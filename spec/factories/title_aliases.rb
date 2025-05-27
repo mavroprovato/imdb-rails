@@ -2,10 +2,11 @@
 
 FactoryBot.define do
   factory :title_alias do
-    ordering { 1 }
-    title { 'MyString' }
+    title
     region
     language
+    name { 'Alias' }
+    ordering { 1 }
     originalTitle { true }
   end
 end

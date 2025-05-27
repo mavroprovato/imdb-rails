@@ -3,5 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe TitleAlias do
-  pending "add some examples to (or delete) #{__FILE__}"
+  subject(:title_alias) { create(:title_alias) }
+
+  it { is_expected.to belong_to(:title) }
+  it { is_expected.to belong_to(:region) }
+  it { is_expected.to belong_to(:language) }
+
+  it { is_expected.to validate_presence_of(:name) }
+  it { is_expected.to validate_uniqueness_of(:name).scoped_to(:title_id) }
 end
