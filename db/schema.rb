@@ -52,11 +52,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
 
   create_table "title_aliases", force: :cascade do |t|
     t.bigint "title_id", null: false
-    t.bigint "region_id", null: false
-    t.bigint "language_id", null: false
+    t.bigint "region_id"
+    t.bigint "language_id"
     t.integer "ordering", null: false
     t.string "name", null: false
-    t.string "alias_attributes", default: "[]", null: false
+    t.string "alias_type"
+    t.string "extra_attribute"
     t.boolean "original_title", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

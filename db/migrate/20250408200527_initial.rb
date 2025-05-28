@@ -51,12 +51,13 @@ class Initial < ActiveRecord::Migration[8.0]
 
     create_table :title_aliases do |t|
       t.references :title, null: false, foreign_key: true
-      t.references :region, null: false, foreign_key: true
-      t.references :language, null: false, foreign_key: true
+      t.references :region, foreign_key: true
+      t.references :language, foreign_key: true
 
       t.integer :ordering, null: false
       t.string :name, null: false
-      t.string :alias_attributes, null: false, default: '[]'
+      t.string :alias_type
+      t.string :extra_attribute
       t.boolean :original_title, null: false, default: true
 
       t.timestamps
