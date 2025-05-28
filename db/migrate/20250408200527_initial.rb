@@ -35,7 +35,7 @@ class Initial < ActiveRecord::Migration[8.0]
       t.boolean :adult, null: false, default: false
       t.integer :start_year
       t.integer :end_year
-      t.integer :runtime, null: false
+      t.integer :runtime
 
       t.timestamps
     end

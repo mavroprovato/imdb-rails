@@ -17,5 +17,4 @@ class Title < ApplicationRecord
   validates :title_type, presence: true
   validates :title, presence: true
   validates :original_title, presence: true
-  validates :runtime, presence: true
 end

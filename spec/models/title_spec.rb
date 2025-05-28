@@ -16,7 +16,6 @@ RSpec.describe Title do
   it { is_expected.to validate_presence_of(:title) }
   it { is_expected.to validate_presence_of(:original_title) }
   it { is_expected.to allow_values(true, false).for(:adult) }
-  it { is_expected.to validate_presence_of(:runtime) }
 
   it { is_expected.to have_many(:title_genres) }
   it { is_expected.to have_many(:genres).through(:title_genres) }

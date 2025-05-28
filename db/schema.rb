@@ -86,7 +86,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.boolean "adult", default: false, null: false
     t.integer "start_year"
     t.integer "end_year"
-    t.integer "runtime", null: false
+    t.integer "runtime"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["unique_id"], name: "index_titles_on_unique_id", unique: true
