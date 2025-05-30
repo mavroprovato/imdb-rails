@@ -2,8 +2,8 @@
 
 module Etl
   module Loaders
-    # Loads people to the database
-    class PeopleLoader < BaseLoader
+    # Processes the name.basics.tsv.gz file
+    class NameBasicsLoader < BaseLoader
       def filename
         'name.basics.tsv.gz'
       end
@@ -17,10 +17,10 @@ module Etl
       private
 
       def person_data(batch)
-        batch.map { |row| transform_row(row) }
+        batch.map { |row| transform_person_row(row) }
       end
 
-      def transform_row(row)
+      def transform_person_row(row)
         {
           unique_id: row[0],
           name: row[1],

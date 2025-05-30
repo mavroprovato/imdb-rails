@@ -4,7 +4,7 @@ module Etl
   module Loaders
     # Base class for loading data
     class BaseLoader
-      def load_data(batch_size = 100_000)
+      def load_data(batch_size = 10_000)
         local_filename = Downloader.new(filename).download
         Rails.logger.info "Running #{self.class}"
         rows_processed = 0
