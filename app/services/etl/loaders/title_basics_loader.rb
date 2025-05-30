@@ -42,7 +42,7 @@ module Etl
           adult: row[4] == '1',
           start_year: row[5] == '\N' ? nil : row[5].to_i,
           end_year: row[6] == '\N' ? nil : row[6].to_i,
-          runtime: row[7].to_i == '\N' ? nil : row[6].to_i,
+          runtime: row[7].to_i == '\N' ? nil : row[7].to_i
         }
       end
 
