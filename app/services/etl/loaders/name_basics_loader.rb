@@ -9,12 +9,21 @@ module Etl
       end
 
       def process_data(batch)
+        Profession.import profession_data(batch), validate: false, on_duplicate_key_ignore: true
         Person.import person_data(batch), validate: false, on_duplicate_key_update: {
           conflict_target: [:unique_id], columns: %i[name birth_year death_year]
         }
       end
 
       private
+
+      def profession_data(batch)
+        batch.each_with_object(Set.new) do |row, set|
+          next if row[4].chomp == '\N'
+
+          row[4].chomp.split(',').each { |name| set << { name: } }
+        end.to_a
+      end
 
       def person_data(batch)
         batch.map { |row| transform_person_row(row) }
