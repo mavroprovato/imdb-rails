@@ -74,10 +74,17 @@ class Initial < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
+
+    create_table :professions do |t|
+      t.string :name, null: false, index: { unique: true }
+
+      t.timestamps
+    end
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def down
+    drop_table :professions
     drop_table :people
     drop_table :title_genres
     drop_table :titles

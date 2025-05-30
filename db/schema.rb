@@ -43,6 +43,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.index ["unique_id"], name: "index_people_on_unique_id", unique: true
   end
 
+  create_table "professions", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_professions_on_name", unique: true
+  end
+
   create_table "regions", force: :cascade do |t|
     t.string "code", null: false
     t.datetime "created_at", null: false
