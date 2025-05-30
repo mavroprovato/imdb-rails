@@ -43,6 +43,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.index ["unique_id"], name: "index_people_on_unique_id", unique: true
   end
 
+  create_table "person_known_for_titles", force: :cascade do |t|
+    t.bigint "person_id", null: false
+    t.bigint "title_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_person_known_for_titles_on_person_id"
+    t.index ["title_id"], name: "index_person_known_for_titles_on_title_id"
+  end
+
   create_table "person_primary_professions", force: :cascade do |t|
     t.bigint "person_id", null: false
     t.bigint "profession_id", null: false
@@ -108,6 +117,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.index ["unique_id"], name: "index_titles_on_unique_id", unique: true
   end
 
+  add_foreign_key "person_known_for_titles", "people"
+  add_foreign_key "person_known_for_titles", "titles"
   add_foreign_key "person_primary_professions", "people"
   add_foreign_key "person_primary_professions", "professions"
   add_foreign_key "title_aliases", "languages"

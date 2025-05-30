@@ -87,6 +87,13 @@ class Initial < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
+
+    create_table :person_known_for_titles do |t|
+      t.references :person, null: false, foreign_key: true
+      t.references :title, null: false, foreign_key: true
+
+      t.timestamps
+    end
   end
 
   def down
