@@ -13,6 +13,8 @@ module Etl
         Person.import person_data(batch), validate: false, on_duplicate_key_update: {
           conflict_target: [:unique_id], columns: %i[name birth_year death_year]
         }
+        PersonPrimaryProfession.import person_primary_profession_data(batch), validate: false,
+                                                                              on_duplicate_key_ignore: true
       end
 
       private
@@ -36,6 +38,28 @@ module Etl
           birth_year: row[2] == '\N' ? nil : row[2].to_i,
           death_year: row[3] == '\N' ? nil : row[3].to_i
         }
+      end
+
+      def person_primary_profession_data(batch)
+        profession_ids = professions
+        person_ids = persons(batch)
+        batch.each_with_object([]) do |row, array|
+          next if row[4].chomp == '\N'
+
+          array << row[4].chomp.split(',').map do |name|
+            { person_id: person_ids[row[0]], profession_id: profession_ids[name] }
+          end
+        end.flatten
+      end
+
+      def professions
+        Profession.pluck(:id, :name).each_with_object({}) { |(id, name), hash| hash[name] = id }
+      end
+
+      def persons(batch)
+        Person.where(
+          unique_id: batch.map { |row| row[0] }
+        ).pluck(:id, :unique_id).each_with_object({}) { |(id, unique_id), hash| hash[unique_id] = id }
       end
     end
   end

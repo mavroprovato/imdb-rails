@@ -47,8 +47,8 @@ module Etl
       end
 
       def title_genre_data(batch)
-        title_ids = titles(batch)
         genre_ids = genres
+        title_ids = titles(batch)
         batch.each_with_object([]) do |row, array|
           next if row[8].chomp == '\N'
 

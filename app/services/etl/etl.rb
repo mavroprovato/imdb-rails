@@ -2,7 +2,7 @@
 
 module Etl
   # All loader classes used to load data
-  LOADERS = [Loaders::NameBasicsLoader].freeze
+  LOADERS = [Loaders::TitleBasicsLoader, Loaders::NameBasicsLoader].freeze
 
   # Performs the ETL procedure
   class Etl

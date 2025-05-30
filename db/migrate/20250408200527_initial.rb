@@ -80,10 +80,17 @@ class Initial < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
+
+    create_table :person_primary_professions do |t|
+      t.references :person, null: false, foreign_key: true
+      t.references :profession, null: false, foreign_key: true
+
+      t.timestamps
+    end
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def down
+    drop_table :person_primary_professions
     drop_table :professions
     drop_table :people
     drop_table :title_genres
@@ -95,4 +102,5 @@ class Initial < ActiveRecord::Migration[8.0]
       DROP TYPE title_type;
     SQL
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 end
