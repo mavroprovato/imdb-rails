@@ -115,7 +115,7 @@ module Etl
 
           row[:knownForTitles].split(',').each do |title|
             if title_ids[title].nil?
-              Rails.logger.warn "Title #{name} missing"
+              Rails.logger.warn "Title #{title} not loaded"
               next
             end
             array << { person_id: loaded_people[row[:nconst]], title_id: title_ids[title] }
