@@ -11,39 +11,91 @@ module Etl
       end
 
       def process_data(batch)
+        process_regions(batch)
+        process_languages(batch)
+        process_title_alias(batch)
+      end
+
+      private
+
+      attr_reader :loaded_regions, :loaded_languages
+
+      def read_regions(batch)
+        batch.each_with_object(Set.new) do |row, set|
+          next if row[:region] == '\N'
+
+          set << row[:region]
+        end
+      end
+
+      def region_data(batch)
+        read_regions(batch).each_with_object([]) { |code, array| array << { code: } }
+      end
+
+      def load_regions(batch)
+        Region.where(code: read_regions(batch)).pluck(:id, :code).each_with_object({}) do |(id, code), hash|
+          hash[code] = id
+        end
+      end
+
+      def process_regions(batch)
+        Region.import region_data(batch), validate: false, on_duplicate_key_ignore: true
+        @loaded_regions = load_regions(batch)
+      end
+
+      def read_languages(batch)
+        batch.each_with_object(Set.new) do |row, set|
+          next if row[:language] == '\N'
+
+          set << row[:language]
+        end
+      end
+
+      def language_data(batch)
+        read_languages(batch).each_with_object([]) { |code, array| array << { code: } }
+      end
+
+      def load_languages(batch)
+        Language.where(code: read_languages(batch)).pluck(:id, :code).each_with_object({}) do |(id, code), hash|
+          hash[code] = id
+        end
+      end
+
+      def process_languages(batch)
+        Language.import language_data(batch), validate: false, on_duplicate_key_ignore: true
+        @loaded_languages = load_languages(batch)
+      end
+
+      def unique_titles(batch)
+        batch.each_with_object(Set.new) { |row, set| row[:titleId].split(',').each { |name| set << name } }
+      end
+
+      def load_titles(batch)
+        Title.where(unique_id: unique_titles(batch)).pluck(:id, :unique_id)
+             .each_with_object({}) do |(id, unique_id), hash|
+          hash[unique_id] = id
+        end
+      end
+
+      def process_title_alias(batch)
         TitleAlias.import title_alias_data(batch), validate: false, on_duplicate_key_ignore: true
       end
 
       def title_alias_data(batch)
-        batch.map { |row| transform_row(row) }
+        title_ids = load_titles(batch)
+        batch.map do |row|
+          {
+            title_id: title_ids[row[:titleId]],
+            ordering: row[:ordering].to_i,
+            name: row[:title],
+            region_id: row[:region] == '\N' ? nil : loaded_regions[row[:region]],
+            language_id: row[:language] == '\N' ? nil : loaded_languages[row[:language]],
+            alias_type: row[:types] == '\N' ? nil : row[:types],
+            extra_attribute: row[:attributes] == '\N' ? nil : row[:attributes],
+            original_title: row[:isOriginalTitle] == '1'
+          }
+        end
       end
-
-      def titles
-        @titles ||= Title.pluck(:id, :unique_id).each_with_object({}) { |(id, unique_id), hash| hash[unique_id] = id }
-      end
-
-      def regions
-        @regions ||= Region.pluck(:id, :code).each_with_object({}) { |(id, code), hash| hash[code] = id }
-      end
-
-      def languages
-        @languages ||= Language.pluck(:id, :code).each_with_object({}) { |(id, code), hash| hash[code] = id }
-      end
-
-      # rubocop:disable Metrics/AbcSize
-      def transform_row(row)
-        {
-          title_id: titles[row[0]],
-          ordering: row[1].to_i,
-          name: row[2],
-          region_id: row[3] == '\N' ? nil : regions[row[3]],
-          language_id: row[4] == '\N' ? nil : languages[row[4]],
-          alias_type: row[5] == '\N' ? nil : row[5],
-          extra_attribute: row[6] == '\N' ? nil : row[6],
-          original_title: row[7] == '1'
-        }
-      end
-      # rubocop:enable Metrics/AbcSize
     end
   end
 end
