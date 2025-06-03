@@ -28,11 +28,6 @@ module Etl
 
       attr_reader :loaded_genres, :loaded_titles
 
-      def process_genres(batch)
-        Genre.import genre_data(batch), validate: false, on_duplicate_key_ignore: true
-        @loaded_genres = load_genres(batch)
-      end
-
       def read_genres(batch)
         batch.each_with_object(Set.new) do |row, set|
           next if row[:genres] == '\N'
@@ -51,12 +46,9 @@ module Etl
         end
       end
 
-      def process_titles(batch)
-        Title.import title_data(batch), validate: false, on_duplicate_key_update: {
-          conflict_target: [:unique_id],
-          columns: %i[title_type title original_title adult start_year end_year runtime]
-        }
-        @loaded_titles = load_titles(batch)
+      def process_genres(batch)
+        Genre.import genre_data(batch), validate: false, on_duplicate_key_ignore: true
+        @loaded_genres = load_genres(batch)
       end
 
       def transform_title_row(row)
@@ -80,6 +72,14 @@ module Etl
         Title.where(
           unique_id: batch.map { |row| row[:tconst] }
         ).pluck(:id, :unique_id).each_with_object({}) { |(id, unique_id), hash| hash[unique_id] = id }
+      end
+
+      def process_titles(batch)
+        Title.import title_data(batch), validate: false, on_duplicate_key_update: {
+          conflict_target: [:unique_id],
+          columns: %i[title_type title original_title adult start_year end_year runtime]
+        }
+        @loaded_titles = load_titles(batch)
       end
 
       def title_genre_data(batch)
