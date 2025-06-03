@@ -6,6 +6,7 @@ module Etl
 
   # Performs the ETL procedure
   class Etl
+    # Performs the ETL procedure, by using all the available loaders.
     def perform
       LOADERS.each { |loader_class| loader_class.new.load_data }
     end
