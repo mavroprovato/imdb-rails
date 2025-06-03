@@ -30,9 +30,7 @@ module Etl
       attr_reader :loaded_professions, :loaded_people
 
       def read_professions(batch)
-        batch.each_with_object(Set.new) do |row, set|
-          next if row[:primaryProfession] == NULL_VALUE
-
+        batch.reject { |row| row[:primaryProfession] == NULL_VALUE }.each_with_object(Set.new) do |row, set|
           row[:primaryProfession].split(',').each { |name| set << name }
         end
       end
@@ -84,9 +82,7 @@ module Etl
       end
 
       def person_primary_profession_data(batch)
-        batch.each_with_object([]) do |row, array|
-          next if row[:primaryProfession] == NULL_VALUE
-
+        batch.reject { |row| row[:primaryProfession] == NULL_VALUE }.each_with_object([]) do |row, array|
           row[:primaryProfession].split(',').map do |profession|
             array << { person_id: loaded_people[row[:nconst]], profession_id: loaded_professions[profession] }
           end
@@ -94,9 +90,7 @@ module Etl
       end
 
       def unique_titles(batch)
-        batch.each_with_object(Set.new) do |row, set|
-          next if row[:knownForTitles] == NULL_VALUE
-
+        batch.reject { |row| row[:knownForTitles] == NULL_VALUE }.each_with_object(Set.new) do |row, set|
           row[:knownForTitles].split(',').each { |name| set << name }
         end
       end
@@ -110,9 +104,7 @@ module Etl
 
       def person_known_for_title_data(batch)
         title_ids = load_titles(batch)
-        batch.each_with_object([]) do |row, array|
-          next if row[:knownForTitles] == NULL_VALUE
-
+        batch.reject { |row| row[:knownForTitles] == NULL_VALUE }.each_with_object([]) do |row, array|
           row[:knownForTitles].split(',').each do |title|
             if title_ids[title].nil?
               Rails.logger.warn "Title #{title} not loaded"

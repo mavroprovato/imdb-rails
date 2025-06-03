@@ -29,9 +29,7 @@ module Etl
       attr_reader :loaded_genres, :loaded_titles
 
       def read_genres(batch)
-        batch.each_with_object(Set.new) do |row, set|
-          next if row[:genres] == NULL_VALUE
-
+        batch.reject { |row| row[:genres] == NULL_VALUE }.each_with_object(Set.new) do |row, set|
           row[:genres].split(',').each { |name| set << name }
         end
       end
@@ -83,9 +81,7 @@ module Etl
       end
 
       def title_genre_data(batch)
-        batch.each_with_object([]) do |row, array|
-          next if row[:genres] == NULL_VALUE
-
+        batch.reject { |row| row[:genres] == NULL_VALUE }.each_with_object([]) do |row, array|
           row[:genres].split(',') do |genre|
             array << { title_id: loaded_titles[row[:tconst]], genre_id: loaded_genres[genre] }
           end

@@ -21,11 +21,7 @@ module Etl
       attr_reader :loaded_regions, :loaded_languages
 
       def read_regions(batch)
-        batch.each_with_object(Set.new) do |row, set|
-          next if row[:region] == NULL_VALUE
-
-          set << row[:region]
-        end
+        batch.reject { |row| row[:region] == NULL_VALUE }.each_with_object(Set.new) { |row, set| set << row[:region] }
       end
 
       def region_data(batch)
@@ -44,9 +40,7 @@ module Etl
       end
 
       def read_languages(batch)
-        batch.each_with_object(Set.new) do |row, set|
-          next if row[:language] == NULL_VALUE
-
+        batch.reject { |row| row[:language] == NULL_VALUE }.each_with_object(Set.new) do |row, set|
           set << row[:language]
         end
       end
