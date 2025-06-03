@@ -23,9 +23,9 @@ module Etl
 
       def genre_data(batch)
         batch.each_with_object(Set.new) do |row, set|
-          next if row[8].chomp == '\N'
+          next if row[8] == '\N'
 
-          row[8].chomp.split(',').each { |name| set << { name: } }
+          row[8].split(',').each { |name| set << { name: } }
         end.to_a
       end
 
@@ -50,9 +50,11 @@ module Etl
         genre_ids = genres
         title_ids = titles(batch)
         batch.each_with_object([]) do |row, array|
-          next if row[8].chomp == '\N'
+          next if row[8] == '\N'
 
-          array << row[8].chomp.split(',').map { |name| { title_id: title_ids[row[0]], genre_id: genre_ids[name] } }
+          row[8].split(',') do |name|
+            array << { title_id: title_ids[row[0]], genre_id: genre_ids[name] }
+          end
         end.flatten
       end
 

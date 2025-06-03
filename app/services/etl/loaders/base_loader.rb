@@ -34,7 +34,7 @@ module Etl
           # Skip first line - header
           next if index.zero?
 
-          batch << line.split("\t")
+          batch << line.chomp.split("\t")
           if (index % batch_size).zero?
             yield batch
             batch = []
