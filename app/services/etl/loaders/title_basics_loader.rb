@@ -9,7 +9,7 @@ module Etl
       # Returns the name of the file that should be downloaded by the loader. For this loader the filename is
       # +title.basics.tsv.gz+.
       #
-      # @return String +title.basics.tsv.gz+.
+      # @return String Returns title.basics.tsv.gz.
       def filename
         'title.basics.tsv.gz'
       end

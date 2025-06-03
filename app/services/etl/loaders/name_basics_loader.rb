@@ -4,91 +4,128 @@ module Etl
   module Loaders
     # Processes the name.basics.tsv.gz file
     class NameBasicsLoader < BaseLoader
+      protected
+
+      # Returns the name of the file that should be downloaded by the loader. For this loader the filename is
+      # +name.basics.tsv.gz+.
+      #
+      # @return String Returns name.basics.tsv.gz.
       def filename
         'name.basics.tsv.gz'
       end
 
+      # Process the data loaded from the +name.basics.tsv.gz+ file, and loads them to the database. This class loads
+      # values for the {#Profession}, {#Person}, {#PersonPrimaryProfession} and {#PersonKnownForTitle} models.
+      #
+      # @param batch Array[Hash] The data to load.
       def process_data(batch)
-        Profession.import profession_data(batch), validate: false, on_duplicate_key_ignore: true
-        Person.import person_data(batch), validate: false, on_duplicate_key_update: {
-          conflict_target: [:unique_id], columns: %i[name birth_year death_year]
-        }
-        PersonPrimaryProfession.import person_primary_profession_data(batch), validate: false,
-                                                                              on_duplicate_key_ignore: true
-        PersonKnownForTitle.import person_known_for_title_data(batch), validate: false,
-                                                                       on_duplicate_key_ignore: true
+        process_professions(batch)
+        process_people(batch)
+        process_primary_professions(batch)
+        process_person_known_for_title(batch)
       end
 
       private
 
-      def profession_data(batch)
-        batch.each_with_object(Set.new) do |row, set|
-          next if row[4] == '\N'
+      attr_reader :loaded_professions, :loaded_people
 
-          row[4].split(',').each { |name| set << { name: } }
-        end.to_a
+      def read_professions(batch)
+        batch.each_with_object(Set.new) do |row, set|
+          next if row[:primaryProfession] == '\N'
+
+          row[:primaryProfession].split(',').each { |name| set << name }
+        end
+      end
+
+      def profession_data(batch)
+        read_professions(batch).each_with_object([]) { |name, array| array << { name: } }
+      end
+
+      def process_professions(batch)
+        Profession.import profession_data(batch), validate: false, on_duplicate_key_ignore: true
+        @loaded_professions = load_professions(batch)
+      end
+
+      def load_professions(batch)
+        Profession.where(name: read_professions(batch)).pluck(:id, :name).each_with_object({}) do |(id, name), hash|
+          hash[name] = id
+        end
+      end
+
+      def transform_person_row(row)
+        {
+          unique_id: row[:nconst],
+          name: row[:primaryName],
+          birth_year: row[:birthYear] == '\N' ? nil : row[:birthYear].to_i,
+          death_year: row[:deathYear] == '\N' ? nil : row[:deathYear].to_i
+        }
       end
 
       def person_data(batch)
         batch.map { |row| transform_person_row(row) }
       end
 
-      def transform_person_row(row)
-        {
-          unique_id: row[0],
-          name: row[1],
-          birth_year: row[2] == '\N' ? nil : row[2].to_i,
-          death_year: row[3] == '\N' ? nil : row[3].to_i
+      def load_people(batch)
+        Person.where(
+          unique_id: batch.map { |row| row[:nconst] }
+        ).pluck(:id, :unique_id).each_with_object({}) { |(id, unique_id), hash| hash[unique_id] = id }
+      end
+
+      def process_people(batch)
+        Person.import person_data(batch), validate: false, on_duplicate_key_update: {
+          conflict_target: [:unique_id], columns: %i[name birth_year death_year]
         }
+        @loaded_people = load_people(batch)
+      end
+
+      def process_primary_professions(batch)
+        PersonPrimaryProfession.import person_primary_profession_data(batch), validate: false,
+                                                                              on_duplicate_key_ignore: true
       end
 
       def person_primary_profession_data(batch)
-        profession_ids = professions
-        person_ids = persons(batch)
         batch.each_with_object([]) do |row, array|
-          next if row[4] == '\N'
+          next if row[:primaryProfession] == '\N'
 
-          row[4].split(',').map do |name|
-            array << { person_id: person_ids[row[0]], profession_id: profession_ids[name] }
+          row[:primaryProfession].split(',').map do |profession|
+            array << { person_id: loaded_people[row[:nconst]], profession_id: loaded_professions[profession] }
           end
         end
       end
 
-      def professions
-        Profession.pluck(:id, :name).each_with_object({}) { |(id, name), hash| hash[name] = id }
-      end
+      def unique_titles(batch)
+        batch.each_with_object(Set.new) do |row, set|
+          next if row[:knownForTitles] == '\N'
 
-      def persons(batch)
-        Person.where(
-          unique_id: batch.map { |row| row[0] }
-        ).pluck(:id, :unique_id).each_with_object({}) { |(id, unique_id), hash| hash[unique_id] = id }
-      end
-
-      def titles(batch)
-        title_unique_ids = batch.each_with_object(Set.new) do |row, set|
-          next if row[5] == '\N'
-
-          row[5].split(',').each { |name| set << name }
+          row[:knownForTitles].split(',').each { |name| set << name }
         end
-        Title.where(unique_id: title_unique_ids).pluck(:id, :unique_id).each_with_object({}) do |(id, unique_id), hash|
+      end
+
+      def load_titles(batch)
+        Title.where(unique_id: unique_titles(batch)).pluck(:id, :unique_id)
+             .each_with_object({}) do |(id, unique_id), hash|
           hash[unique_id] = id
         end
       end
 
       def person_known_for_title_data(batch)
-        person_ids = persons(batch)
-        title_ids = titles(batch)
+        title_ids = load_titles(batch)
         batch.each_with_object([]) do |row, array|
-          next if row[5] == '\N'
+          next if row[:knownForTitles] == '\N'
 
-          row[5].split(',').each do |name|
-            if title_ids[name].nil?
-              Rails.logger.info "Title #{name} missing"
+          row[:knownForTitles].split(',').each do |title|
+            if title_ids[title].nil?
+              Rails.logger.warn "Title #{name} missing"
               next
             end
-            array << { person_id: person_ids[row[0]], title_id: title_ids[name] }
+            array << { person_id: loaded_people[row[:nconst]], title_id: title_ids[title] }
           end
         end
+      end
+
+      def process_person_known_for_title(batch)
+        PersonKnownForTitle.import person_known_for_title_data(batch), validate: false,
+                                                                       on_duplicate_key_ignore: true
       end
     end
   end
