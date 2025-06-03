@@ -42,20 +42,24 @@ module Etl
 
       private
 
+      # rubocop:disable Metrics/MethodLength
       def each_batch(file_reader, batch_size)
+        headers = []
         batch = []
         file_reader.each_line.with_index do |line, index|
-          # Skip first line - header
-          next if index.zero?
-
-          batch << line.chomp.split("\t")
-          if (index % batch_size).zero?
-            yield batch
-            batch = []
+          if index.zero?
+            headers = line.chomp.split("\t").map(&:to_sym)
+          else
+            batch << headers.zip(line.chomp.split("\t")).to_h
+            if (index % batch_size).zero?
+              yield batch
+              batch = []
+            end
           end
         end
         yield batch
       end
+      # rubocop:enable Metrics/MethodLength
     end
   end
 end
