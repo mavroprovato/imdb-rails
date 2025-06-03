@@ -22,7 +22,7 @@ module Etl
 
       def read_regions(batch)
         batch.each_with_object(Set.new) do |row, set|
-          next if row[:region] == '\N'
+          next if row[:region] == NULL_VALUE
 
           set << row[:region]
         end
@@ -45,7 +45,7 @@ module Etl
 
       def read_languages(batch)
         batch.each_with_object(Set.new) do |row, set|
-          next if row[:language] == '\N'
+          next if row[:language] == NULL_VALUE
 
           set << row[:language]
         end
@@ -88,10 +88,10 @@ module Etl
             title_id: title_ids[row[:titleId]],
             ordering: row[:ordering].to_i,
             name: row[:title],
-            region_id: row[:region] == '\N' ? nil : loaded_regions[row[:region]],
-            language_id: row[:language] == '\N' ? nil : loaded_languages[row[:language]],
-            alias_type: row[:types] == '\N' ? nil : row[:types],
-            extra_attribute: row[:attributes] == '\N' ? nil : row[:attributes],
+            region_id: row[:region] == NULL_VALUE ? nil : loaded_regions[row[:region]],
+            language_id: row[:language] == NULL_VALUE ? nil : loaded_languages[row[:language]],
+            alias_type: row[:types] == NULL_VALUE ? nil : row[:types],
+            extra_attribute: row[:attributes] == NULL_VALUE ? nil : row[:attributes],
             original_title: row[:isOriginalTitle] == '1'
           }
         end

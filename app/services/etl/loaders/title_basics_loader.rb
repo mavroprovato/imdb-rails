@@ -30,7 +30,7 @@ module Etl
 
       def read_genres(batch)
         batch.each_with_object(Set.new) do |row, set|
-          next if row[:genres] == '\N'
+          next if row[:genres] == NULL_VALUE
 
           row[:genres].split(',').each { |name| set << name }
         end
@@ -58,9 +58,9 @@ module Etl
           title: row[:primaryTitle],
           original_title: row[:originalTitle],
           adult: row[:isAdult] == '1',
-          start_year: row[:startYear] == '\N' ? nil : row[:startYear].to_i,
-          end_year: row[:endYear] == '\N' ? nil : row[:endYear].to_i,
-          runtime: row[:runtimeMinutes].to_i == '\N' ? nil : row[:runtimeMinutes].to_i
+          start_year: row[:startYear] == NULL_VALUE ? nil : row[:startYear].to_i,
+          end_year: row[:endYear] == NULL_VALUE ? nil : row[:endYear].to_i,
+          runtime: row[:runtimeMinutes] == NULL_VALUE ? nil : row[:runtimeMinutes].to_i
         }
       end
 
@@ -84,7 +84,7 @@ module Etl
 
       def title_genre_data(batch)
         batch.each_with_object([]) do |row, array|
-          next if row[:genres] == '\N'
+          next if row[:genres] == NULL_VALUE
 
           row[:genres].split(',') do |genre|
             array << { title_id: loaded_titles[row[:tconst]], genre_id: loaded_genres[genre] }

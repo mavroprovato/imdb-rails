@@ -2,6 +2,9 @@
 
 module Etl
   module Loaders
+    # String that indicates a null value for a column
+    NULL_VALUE = '\N'
+
     # Base class for loading data
     class BaseLoader
       # Load the data from the TSV file.

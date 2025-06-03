@@ -31,7 +31,7 @@ module Etl
 
       def read_professions(batch)
         batch.each_with_object(Set.new) do |row, set|
-          next if row[:primaryProfession] == '\N'
+          next if row[:primaryProfession] == NULL_VALUE
 
           row[:primaryProfession].split(',').each { |name| set << name }
         end
@@ -56,8 +56,8 @@ module Etl
         {
           unique_id: row[:nconst],
           name: row[:primaryName],
-          birth_year: row[:birthYear] == '\N' ? nil : row[:birthYear].to_i,
-          death_year: row[:deathYear] == '\N' ? nil : row[:deathYear].to_i
+          birth_year: row[:birthYear] == NULL_VALUE ? nil : row[:birthYear].to_i,
+          death_year: row[:deathYear] == NULL_VALUE ? nil : row[:deathYear].to_i
         }
       end
 
@@ -85,7 +85,7 @@ module Etl
 
       def person_primary_profession_data(batch)
         batch.each_with_object([]) do |row, array|
-          next if row[:primaryProfession] == '\N'
+          next if row[:primaryProfession] == NULL_VALUE
 
           row[:primaryProfession].split(',').map do |profession|
             array << { person_id: loaded_people[row[:nconst]], profession_id: loaded_professions[profession] }
@@ -95,7 +95,7 @@ module Etl
 
       def unique_titles(batch)
         batch.each_with_object(Set.new) do |row, set|
-          next if row[:knownForTitles] == '\N'
+          next if row[:knownForTitles] == NULL_VALUE
 
           row[:knownForTitles].split(',').each { |name| set << name }
         end
@@ -111,7 +111,7 @@ module Etl
       def person_known_for_title_data(batch)
         title_ids = load_titles(batch)
         batch.each_with_object([]) do |row, array|
-          next if row[:knownForTitles] == '\N'
+          next if row[:knownForTitles] == NULL_VALUE
 
           row[:knownForTitles].split(',').each do |title|
             if title_ids[title].nil?
