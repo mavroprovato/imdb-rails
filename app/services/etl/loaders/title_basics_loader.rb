@@ -4,6 +4,8 @@ module Etl
   module Loaders
     # Processes the title.basics.tsv.gz file
     class TitleBasicsLoader < BaseLoader
+      include LoadHelper
+
       protected
 
       # Returns the name of the file that should be downloaded by the loader. For this loader the filename is
@@ -55,7 +57,7 @@ module Etl
           title_type: row[:titleType],
           title: row[:primaryTitle],
           original_title: row[:originalTitle],
-          adult: row[:isAdult] == '1',
+          adult: transform_boolean(row[:isAdult]),
           start_year: row[:startYear] == NULL_VALUE ? nil : row[:startYear].to_i,
           end_year: row[:endYear] == NULL_VALUE ? nil : row[:endYear].to_i,
           runtime: row[:runtimeMinutes] == NULL_VALUE ? nil : row[:runtimeMinutes].to_i

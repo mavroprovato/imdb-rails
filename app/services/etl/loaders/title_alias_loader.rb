@@ -4,6 +4,8 @@ module Etl
   module Loaders
     # Loads title aliases to the database
     class TitleAliasLoader < BaseLoader
+      include LoadHelper
+
       protected
 
       def filename
@@ -86,7 +88,7 @@ module Etl
             language_id: row[:language] == NULL_VALUE ? nil : loaded_languages[row[:language]],
             alias_type: row[:types] == NULL_VALUE ? nil : row[:types],
             extra_attribute: row[:attributes] == NULL_VALUE ? nil : row[:attributes],
-            original_title: row[:isOriginalTitle] == '1'
+            original_title: transform_boolean(row[:isOriginalTitle])
           }
         end
       end
