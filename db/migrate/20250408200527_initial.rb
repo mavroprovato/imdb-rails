@@ -86,6 +86,8 @@ class Initial < ActiveRecord::Migration[8.0]
       t.references :profession, null: false, foreign_key: true
 
       t.timestamps
+
+      t.index %i[person_id profession_id], unique: true
     end
 
     create_table :person_known_for_titles do |t|
@@ -93,6 +95,8 @@ class Initial < ActiveRecord::Migration[8.0]
       t.references :title, null: false, foreign_key: true
 
       t.timestamps
+
+      t.index %i[person_id title_id], unique: true
     end
   end
 

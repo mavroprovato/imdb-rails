@@ -48,6 +48,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.bigint "title_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["person_id", "title_id"], name: "index_person_known_for_titles_on_person_id_and_title_id", unique: true
     t.index ["person_id"], name: "index_person_known_for_titles_on_person_id"
     t.index ["title_id"], name: "index_person_known_for_titles_on_title_id"
   end
@@ -57,6 +58,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.bigint "profession_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["person_id", "profession_id"], name: "idx_on_person_id_profession_id_d418777cbc", unique: true
     t.index ["person_id"], name: "index_person_primary_professions_on_person_id"
     t.index ["profession_id"], name: "index_person_primary_professions_on_profession_id"
   end
