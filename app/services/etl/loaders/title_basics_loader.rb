@@ -11,7 +11,7 @@ module Etl
       # Returns the name of the file that should be downloaded by the loader. For this loader the filename is
       # +title.basics.tsv.gz+.
       #
-      # @return String Returns title.basics.tsv.gz.
+      # @return [String] Returns title.basics.tsv.gz.
       def filename
         'title.basics.tsv.gz'
       end
@@ -30,25 +30,13 @@ module Etl
 
       attr_reader :loaded_genres, :loaded_titles
 
-      def read_genres(batch)
-        batch.reject { |row| row[:genres] == NULL_VALUE }.each_with_object(Set.new) do |row, set|
-          row[:genres].split(',').each { |name| set << name }
-        end
-      end
-
       def genre_data(batch)
-        read_genres(batch).each_with_object([]) { |name, array| array << { name: } }
-      end
-
-      def load_genres(batch)
-        Genre.where(name: read_genres(batch)).pluck(:id, :name).each_with_object({}) do |(id, name), hash|
-          hash[name] = id
-        end
+        read_unique_values(batch, :genres, multivalued: true).each_with_object([]) { |name, array| array << { name: } }
       end
 
       def process_genres(batch)
         Genre.import genre_data(batch), validate: false, on_duplicate_key_ignore: true
-        @loaded_genres = load_genres(batch)
+        @loaded_genres = loaded_values(Genre, :name, read_unique_values(batch, :genres, multivalued: true))
       end
 
       def transform_title_row(row)
@@ -68,18 +56,12 @@ module Etl
         batch.map { |row| transform_title_row(row) }
       end
 
-      def load_titles(batch)
-        Title.where(
-          unique_id: batch.map { |row| row[:tconst] }
-        ).pluck(:id, :unique_id).each_with_object({}) { |(id, unique_id), hash| hash[unique_id] = id }
-      end
-
       def process_titles(batch)
         Title.import title_data(batch), validate: false, on_duplicate_key_update: {
           conflict_target: [:unique_id],
           columns: %i[title_type title original_title adult start_year end_year runtime]
         }
-        @loaded_titles = load_titles(batch)
+        @loaded_titles = loaded_values(Title, :unique_id, read_unique_values(batch, :tconst))
       end
 
       def title_genre_data(batch)

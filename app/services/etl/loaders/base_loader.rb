@@ -11,7 +11,7 @@ module Etl
       #
       # The method downloads the filename returned by the {#filename} method and loads the data that should be imported
       # by the {#process_data} method.
-      # @param batch_size Integer The number of rows to process in each batch. By default, 10000 rows are processed.
+      # @param batch_size [Integer] The number of rows to process in each batch. By default, 10000 rows are processed.
       def load_data(batch_size = 10_000)
         local_filename = Downloader.new(filename).download
         Rails.logger.info "Running #{self.class}"
@@ -29,7 +29,7 @@ module Etl
       # Returns the name of the file that should be downloaded by the loader. This method must be implemented by
       # subclasses.
       #
-      # @return String The filename.
+      # @return [String] The filename.
       # @abstract
       def filename
         raise NotImplementedError, "#{self.class} must implement the '#{__method__}' method"
