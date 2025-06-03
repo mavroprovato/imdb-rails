@@ -58,9 +58,9 @@ module Etl
           title: row[:primaryTitle],
           original_title: row[:originalTitle],
           adult: transform_boolean(row[:isAdult]),
-          start_year: row[:startYear] == NULL_VALUE ? nil : row[:startYear].to_i,
-          end_year: row[:endYear] == NULL_VALUE ? nil : row[:endYear].to_i,
-          runtime: row[:runtimeMinutes] == NULL_VALUE ? nil : row[:runtimeMinutes].to_i
+          start_year: transform_nilable_integer(row[:startYear]),
+          end_year: transform_nilable_integer(row[:endYear]),
+          runtime: transform_nilable_integer(row[:runtimeMinutes])
         }
       end
 

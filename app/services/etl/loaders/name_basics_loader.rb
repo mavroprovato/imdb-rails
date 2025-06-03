@@ -4,6 +4,8 @@ module Etl
   module Loaders
     # Processes the name.basics.tsv.gz file
     class NameBasicsLoader < BaseLoader
+      include LoadHelper
+
       protected
 
       # Returns the name of the file that should be downloaded by the loader. For this loader the filename is
@@ -54,8 +56,8 @@ module Etl
         {
           unique_id: row[:nconst],
           name: row[:primaryName],
-          birth_year: row[:birthYear] == NULL_VALUE ? nil : row[:birthYear].to_i,
-          death_year: row[:deathYear] == NULL_VALUE ? nil : row[:deathYear].to_i
+          birth_year: transform_nilable_integer(row[:birthYear]),
+          death_year: transform_nilable_integer(row[:deathYear])
         }
       end
 

@@ -82,7 +82,7 @@ module Etl
         batch.map do |row|
           {
             title_id: title_ids[row[:titleId]],
-            ordering: row[:ordering].to_i,
+            ordering: transform_integer(row[:ordering]),
             name: row[:title],
             region_id: row[:region] == NULL_VALUE ? nil : loaded_regions[row[:region]],
             language_id: row[:language] == NULL_VALUE ? nil : loaded_languages[row[:language]],
