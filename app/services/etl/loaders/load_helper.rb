@@ -28,6 +28,14 @@ module Etl
         value == NULL_VALUE ? nil : value.to_i
       end
 
+      # Transform a nilable string value
+      #
+      # @param value [String] The string value.
+      # @return [String, nil] The string value, or nil.
+      def transform_nilable_string(value)
+        value == NULL_VALUE ? nil : value
+      end
+
       # Load the unique values for a column from a batch of data.
       #
       # @param batch [Array<Hash>] The data to load.
