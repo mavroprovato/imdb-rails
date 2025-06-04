@@ -64,10 +64,14 @@ module Etl
         @loaded_titles = loaded_values(Title, :unique_id, read_unique_values(batch, :tconst))
       end
 
+      def transform_genre_data_row(row, genre_id)
+        { title_id: loaded_titles[row[:tconst]], genre_id: }
+      end
+
       def title_genre_data(batch)
         batch.reject { |row| row[:genres] == NULL_VALUE }.each_with_object([]) do |row, array|
           row[:genres].split(',') do |genre|
-            array << { title_id: loaded_titles[row[:tconst]], genre_id: loaded_genres[genre] }
+            array << transform_genre_data_row(row, loaded_genres[genre])
           end
         end
       end

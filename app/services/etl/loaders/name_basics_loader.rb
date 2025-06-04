@@ -29,27 +29,19 @@ module Etl
 
       private
 
-      attr_reader :loaded_professions, :loaded_people
-
-      def read_professions(batch)
-        batch.reject { |row| row[:primaryProfession] == NULL_VALUE }.each_with_object(Set.new) do |row, set|
-          row[:primaryProfession].split(',').each { |name| set << name }
-        end
-      end
+      attr_reader :loaded_professions, :loaded_people, :loaded_titles
 
       def profession_data(batch)
-        read_professions(batch).each_with_object([]) { |name, array| array << { name: } }
+        read_unique_values(batch, :primaryProfession, multivalued: true).each_with_object([]) do |name, array|
+          array << { name: }
+        end
       end
 
       def process_professions(batch)
         Profession.import profession_data(batch), validate: false, on_duplicate_key_ignore: true
-        @loaded_professions = load_professions(batch)
-      end
-
-      def load_professions(batch)
-        Profession.where(name: read_professions(batch)).pluck(:id, :name).each_with_object({}) do |(id, name), hash|
-          hash[name] = id
-        end
+        @loaded_professions = loaded_values(
+          Profession, :name, read_unique_values(batch, :primaryProfession, multivalued: true)
+        )
       end
 
       def transform_person_row(row)
@@ -65,22 +57,11 @@ module Etl
         batch.map { |row| transform_person_row(row) }
       end
 
-      def load_people(batch)
-        Person.where(
-          unique_id: batch.map { |row| row[:nconst] }
-        ).pluck(:id, :unique_id).each_with_object({}) { |(id, unique_id), hash| hash[unique_id] = id }
-      end
-
       def process_people(batch)
         Person.import person_data(batch), validate: false, on_duplicate_key_update: {
           conflict_target: [:unique_id], columns: %i[name birth_year death_year]
         }
-        @loaded_people = load_people(batch)
-      end
-
-      def process_primary_professions(batch)
-        PersonPrimaryProfession.import person_primary_profession_data(batch), validate: false,
-                                                                              on_duplicate_key_ignore: true
+        @loaded_people = loaded_values(Person, :unique_id, read_unique_values(batch, :nconst))
       end
 
       def person_primary_profession_data(batch)
@@ -91,35 +72,31 @@ module Etl
         end
       end
 
-      def unique_titles(batch)
-        batch.reject { |row| row[:knownForTitles] == NULL_VALUE }.each_with_object(Set.new) do |row, set|
-          row[:knownForTitles].split(',').each { |name| set << name }
-        end
-      end
-
-      def load_titles(batch)
-        Title.where(unique_id: unique_titles(batch)).pluck(:id, :unique_id)
-             .each_with_object({}) do |(id, unique_id), hash|
-          hash[unique_id] = id
-        end
-      end
-
-      def person_known_for_title_data(batch)
-        title_ids = load_titles(batch)
-        batch.reject { |row| row[:knownForTitles] == NULL_VALUE }.each_with_object([]) do |row, array|
-          row[:knownForTitles].split(',').each do |title|
-            if title_ids[title].nil?
-              Rails.logger.warn "Title #{title} not loaded"
-              next
-            end
-            array << { person_id: loaded_people[row[:nconst]], title_id: title_ids[title] }
-          end
-        end
+      def process_primary_professions(batch)
+        PersonPrimaryProfession.import person_primary_profession_data(batch), validate: false,
+                                                                              on_duplicate_key_ignore: true
       end
 
       def process_person_known_for_title(batch)
+        @loaded_titles = loaded_values(Title, :unique_id, read_unique_values(batch, :knownForTitles, multivalued: true))
         PersonKnownForTitle.import person_known_for_title_data(batch), validate: false,
                                                                        on_duplicate_key_ignore: true
+      end
+
+      def transform_person_known_for_title_row(row, title_id)
+        { person_id: loaded_people[row[:nconst]], title_id: }
+      end
+
+      def person_known_for_title_data(batch)
+        batch.reject { |row| row[:knownForTitles] == NULL_VALUE }.each_with_object([]) do |row, array|
+          row[:knownForTitles].split(',').each do |title|
+            if loaded_titles[title].nil?
+              Rails.logger.warn "Title #{title} not loaded"
+              next
+            end
+            array << transform_person_known_for_title_row(row, loaded_titles[title])
+          end
+        end
       end
     end
   end
