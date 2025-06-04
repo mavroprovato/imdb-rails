@@ -1,24 +1,44 @@
-# README
+# IMDB Rails application
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A sample application that uses the [IMBb dataset](https://developer.imdb.com/non-commercial-datasets/)
 
-Things you may want to cover:
+## Dependencies
 
-* Ruby version
+Make sure that you have the following dependencies installed before running the application:
 
-* System dependencies
+  * [Ruby](https://www.ruby-lang.org/) version 3.4.4 or later
+  * [Bundler](https://bundler.io/) version 2.6.7 or later
+  * [PostgreSQL](https://www.postgresql.org/) version 15.13 or later
 
-* Configuration
+Then run the following command in order to install the application dependencies
 
-* Database creation
+```shell
+bundle install
+```
 
-* Database initialization
+## Database
 
-* How to run the test suite
+In order to create the database schema run
 
-* Services (job queues, cache servers, search engines, etc.)
+```shell
+rails db:create db:migrate
+```
 
-* Deployment instructions
+Then you can load the dataset with the following command:
 
-* ...
+```shell
+rails imdb:load_data
+```
+
+Note that the dataset is huge, and will take a lot of time to load.
+
+## Running the application
+
+Now you can run the application with the following command
+
+```shell
+rails console
+```
+
+The application is available at http://127.0.0.1:3000/
+
