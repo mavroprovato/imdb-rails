@@ -11,7 +11,6 @@ RSpec.describe TitleAlias do
 
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_presence_of(:ordering) }
-  it { is_expected.to validate_uniqueness_of(:name).scoped_to(:title_id) }
   it { is_expected.to validate_uniqueness_of(:ordering).scoped_to(:title_id) }
   it { is_expected.to allow_values(true, false).for(:original_title) }
 end

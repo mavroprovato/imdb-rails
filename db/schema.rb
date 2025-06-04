@@ -90,7 +90,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.datetime "updated_at", null: false
     t.index ["language_id"], name: "index_title_aliases_on_language_id"
     t.index ["region_id"], name: "index_title_aliases_on_region_id"
-    t.index ["title_id", "name"], name: "index_title_aliases_on_title_id_and_name", unique: true
     t.index ["title_id", "ordering"], name: "index_title_aliases_on_title_id_and_ordering", unique: true
     t.index ["title_id"], name: "index_title_aliases_on_title_id"
   end
