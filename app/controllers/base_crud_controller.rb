@@ -9,7 +9,7 @@ class BaseCrudController < ApplicationController
   end
 
   def show
-    render json: blueprint.render(model.find(params[:id]))
+    render json: blueprint.render(model.find(params[:id]), view:)
   end
 
   protected
