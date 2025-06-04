@@ -12,6 +12,7 @@ class Title < ApplicationRecord
 
   has_many :title_genres, dependent: :destroy
   has_many :genres, through: :title_genres
+  has_many :title_aliases, dependent: :destroy
 
   validates :unique_id, presence: true, uniqueness: true
   validates :title_type, presence: true

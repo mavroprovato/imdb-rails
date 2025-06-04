@@ -9,7 +9,7 @@ class TitlesController < BaseCrudController
   end
 
   def include
-    [:genres]
+    [:genres, { title_aliases: %i[region language] }]
   end
 
   def view
