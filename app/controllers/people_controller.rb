@@ -9,6 +9,6 @@ class PeopleController < BaseCrudController
   end
 
   def include
-    [:known_for]
+    %i[known_for primary_professions]
   end
 end
