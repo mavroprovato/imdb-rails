@@ -11,4 +11,8 @@ class TitlesController < BaseCrudController
   def include
     [:genres]
   end
+
+  def view
+    :full
+  end
 end

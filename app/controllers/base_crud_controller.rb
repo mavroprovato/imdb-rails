@@ -5,7 +5,7 @@ class BaseCrudController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def index
-    render json: { total:, results: blueprint.render_as_hash(results) }
+    render json: { total:, results: blueprint.render_as_hash(results, view:) }
   end
 
   def show
@@ -21,6 +21,8 @@ class BaseCrudController < ApplicationController
   def include
     []
   end
+
+  def view; end
 
   def blueprint
     "#{model}Blueprint".constantize

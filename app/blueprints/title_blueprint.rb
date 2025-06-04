@@ -6,5 +6,7 @@ class TitleBlueprint < Blueprinter::Base
 
   fields :unique_id, :title_type, :title, :original_title, :adult, :start_year, :end_year, :runtime
 
-  association :genres, blueprint: GenreBlueprint
+  view :full do
+    association :genres, blueprint: GenreBlueprint
+  end
 end
