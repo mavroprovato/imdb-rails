@@ -36,6 +36,8 @@ class Initial < ActiveRecord::Migration[8.0]
       t.integer :start_year
       t.integer :end_year
       t.integer :runtime
+      t.decimal :rating, precision: 3, scale: 1, null: true
+      t.integer :votes, null: true
 
       t.timestamps
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_08_023253) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -124,6 +124,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_08_023253) do
     t.integer "start_year"
     t.integer "end_year"
     t.integer "runtime"
+    t.decimal "rating", precision: 3, scale: 1
+    t.integer "votes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["unique_id"], name: "index_titles_on_unique_id", unique: true
