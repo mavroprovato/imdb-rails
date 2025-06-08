@@ -58,4 +58,3 @@ module Etl
     end
   end
 end
-
