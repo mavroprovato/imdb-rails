@@ -71,7 +71,7 @@ module Etl
       def title_alias_data(batch)
         batch.each_with_object([]) do |row, array|
           if loaded_titles[row[:titleId]].nil?
-            Rails.logger.warn "Title #{title} not loaded"
+            Rails.logger.warn "Title #{row[:titleId]} not loaded"
             next
           end
           array << transform_title_alias_row(row)

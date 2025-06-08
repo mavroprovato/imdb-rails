@@ -97,9 +97,19 @@ class Initial < ActiveRecord::Migration[8.0]
 
       t.index %i[person_id title_id], unique: true
     end
+
+    create_table :title_episodes do |t|
+      t.references :title, null: false, foreign_key: true
+      t.references :parent_title, null: false, foreign_key: { to_table: :titles }
+      t.integer :season, null: true
+      t.integer :episode, null: true
+
+      t.timestamps
+    end
   end
 
   def down
+    drop_table :title_episodes
     drop_table :person_primary_professions
     drop_table :professions
     drop_table :people

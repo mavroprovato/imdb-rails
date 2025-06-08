@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_08_023253) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -94,6 +94,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.index ["title_id"], name: "index_title_aliases_on_title_id"
   end
 
+  create_table "title_episodes", force: :cascade do |t|
+    t.bigint "title_id", null: false
+    t.bigint "parent_title_id", null: false
+    t.integer "season"
+    t.integer "episode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_title_id"], name: "index_title_episodes_on_parent_title_id"
+    t.index ["title_id"], name: "index_title_episodes_on_title_id"
+  end
+
   create_table "title_genres", force: :cascade do |t|
     t.bigint "title_id", null: false
     t.bigint "genre_id", null: false
@@ -125,6 +136,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
   add_foreign_key "title_aliases", "languages"
   add_foreign_key "title_aliases", "regions"
   add_foreign_key "title_aliases", "titles"
+  add_foreign_key "title_episodes", "titles"
+  add_foreign_key "title_episodes", "titles", column: "parent_title_id"
   add_foreign_key "title_genres", "genres"
   add_foreign_key "title_genres", "titles"
 end
