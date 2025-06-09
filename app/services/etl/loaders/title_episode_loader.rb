@@ -4,6 +4,8 @@ module Etl
   module Loaders
     # Processes the title.episode.tsv.gz file
     class TitleEpisodeLoader < BaseLoader
+      # The title of the columns which contain titles
+      TITLE_COLUMN_NAMES = %i[tconst parentTconst].freeze
       include LoadHelper
 
       protected
@@ -44,15 +46,15 @@ module Etl
       end
 
       def title_episode_data(batch)
-        title_column_names = %i[tconst parentTconst]
         batch.each_with_object([]) do |row, array|
-          title_column_names.each do |column|
+          title_missing = false
+          TITLE_COLUMN_NAMES.each do |column|
             if loaded_titles[row[column]].nil?
               Rails.logger.warn "Title #{row[column]} not loaded"
-              next
+              title_missing = true
             end
           end
-          array << transform_title_episode_row(row)
+          array << transform_title_episode_row(row) unless title_missing
         end
       end
     end
