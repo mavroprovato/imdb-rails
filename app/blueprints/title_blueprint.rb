@@ -4,7 +4,7 @@
 class TitleBlueprint < Blueprinter::Base
   identifier :id
 
-  fields :unique_id, :title_type, :title, :original_title, :adult, :start_year, :end_year, :runtime
+  fields :unique_id, :title_type, :title, :original_title, :adult, :start_year, :end_year, :runtime, :rating, :votes
 
   view :full do
     association :genres, blueprint: GenreBlueprint
