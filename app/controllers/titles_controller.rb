@@ -19,6 +19,10 @@ class TitlesController < BaseCrudController
     [:genres, { title_aliases: %i[region language] }]
   end
 
+  # The blueprint view to use in order to render the model objects. This method returns :full in order to include the
+  # associations of the +Person+ model.
+  #
+  # @return [Symbol, nil] Return :full.
   def view
     :full
   end

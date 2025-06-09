@@ -29,8 +29,15 @@ class BaseCrudController < ApplicationController
     []
   end
 
+  # The blueprint view to use in order to render the model objects. This method returns nil by default it order to
+  # utilize the default view.
+  #
+  # @return [Symbol, nil] The blueprint view to use in order to render the model objects.
   def view; end
 
+  # The base query used to fetch the objects for the controller.
+  #
+  # @return The base query used to fetch the objects for the controller.
   def base_query
     return model if include.empty?
 

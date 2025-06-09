@@ -11,7 +11,11 @@ class TitleEpisodesController < BaseCrudController
     TitleEpisode
   end
 
+  # The base query used to fetch the objects for the controller. For this controller, it only fetches +TitleEpisode+
+  # objects that their parent_title_id attribute matches the title_id parameter.
+  #
+  # @return The base query used to fetch the objects for the controller.
   def base_query
-    super.where(parent_title_id: params[:title_id]).order(:season, :episode)
+    super.where(parent_title_id: params.require(:title_id)).order(:season, :episode)
   end
 end
