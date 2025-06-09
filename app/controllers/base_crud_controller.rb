@@ -28,14 +28,20 @@ class BaseCrudController < ApplicationController
     "#{model}Blueprint".constantize
   end
 
+  def base_query
+    return model if include.empty?
+
+    model.includes(*include)
+  end
+
   private
 
   def total
-    model.count
+    base_query.count
   end
 
   def results
-    paginate_query order_query list_query
+    paginate_query order_query base_query
   end
 
   def paginate_query(query)
@@ -44,12 +50,6 @@ class BaseCrudController < ApplicationController
 
   def order_query(query)
     query.order(:id)
-  end
-
-  def list_query
-    return model if include.empty?
-
-    model.includes(*include)
   end
 
   def record_not_found
