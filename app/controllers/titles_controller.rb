@@ -11,6 +11,10 @@ class TitlesController < BaseCrudController
     Title
   end
 
+  # The list of associations to eagerly load, in order to prevent N+1 queries. This method returns
+  # [:genres, { title_aliases: %i[region language] }].
+  #
+  # @return List[Symbol] Returns [:genres, { title_aliases: %i[region language] }].
   def include
     [:genres, { title_aliases: %i[region language] }]
   end

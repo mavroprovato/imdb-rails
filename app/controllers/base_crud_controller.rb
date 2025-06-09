@@ -21,15 +21,15 @@ class BaseCrudController < ApplicationController
     raise NotImplementedError, "#{self.class} must implement the '#{__method__}' method"
   end
 
+  # The list of associations to eagerly load, in order to prevent N+1 queries. All associations included in the response
+  # should be returned.
+  #
+  # @return List[Symbol] The list of associations to eagerly load.
   def include
     []
   end
 
   def view; end
-
-  def blueprint
-    "#{model}Blueprint".constantize
-  end
 
   def base_query
     return model if include.empty?
@@ -38,6 +38,10 @@ class BaseCrudController < ApplicationController
   end
 
   private
+
+  def blueprint
+    "#{model}Blueprint".constantize
+  end
 
   def total
     base_query.count
