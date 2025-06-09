@@ -14,6 +14,9 @@ class BaseCrudController < ApplicationController
 
   protected
 
+  # The model for the controller. This method must be implemented by subclasses.
+  #
+  # @return ApplicationRecord The model for the controller.
   def model
     raise NotImplementedError, "#{self.class} must implement the '#{__method__}' method"
   end

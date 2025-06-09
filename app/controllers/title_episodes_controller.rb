@@ -4,6 +4,9 @@
 class TitleEpisodesController < BaseCrudController
   protected
 
+  # The model for the controller. The model for this controller is +TitleEpisode+.
+  #
+  # @return ApplicationRecord The model for the controller. This controller returns +TitleEpisode+.
   def model
     TitleEpisode
   end

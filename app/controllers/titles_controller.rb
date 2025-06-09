@@ -4,6 +4,9 @@
 class TitlesController < BaseCrudController
   protected
 
+  # The model for the controller. The model for this controller is +Title+.
+  #
+  # @return ApplicationRecord The model for the controller. This controller returns +Title+.
   def model
     Title
   end
