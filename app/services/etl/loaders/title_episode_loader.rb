@@ -38,8 +38,8 @@ module Etl
         {
           title_id: loaded_titles[row[:tconst]],
           parent_title_id: loaded_titles[row[:parentTconst]],
-          season: transform_integer(row[:seasonNumber]),
-          episode: transform_integer(row[:episodeNumber])
+          season: transform_nilable_integer(row[:seasonNumber]),
+          episode: transform_nilable_integer(row[:episodeNumber])
         }
       end
 
