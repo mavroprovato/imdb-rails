@@ -40,7 +40,9 @@ module Etl
       end
 
       def language_data(batch)
-        read_unique_values(batch, :language).each_with_object([]) { |code, array| array << { code: } }
+        read_unique_values(batch, :language).each_with_object([]) do |code, array|
+          array << { code:, name: LanguageFinder.language_name(code) }
+        end
       end
 
       def process_languages(batch)

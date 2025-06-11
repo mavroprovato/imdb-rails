@@ -53,6 +53,9 @@ gem 'activerecord-import', '~> 2.1'
 # Simple, Fast, and Declarative Serialization Library for Ruby [https://github.com/procore-oss/blueprinter]
 gem 'blueprinter', '~> 1.1.2'
 
+# Ruby gem with ISO 639-1 and ISO 639-2 language code entries and convenience methods. [https://github.com/xwmx/iso-639]
+gem 'iso-639', '~> 0.3.8'
+
 group :development do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem 'brakeman', require: false
