@@ -4,5 +4,5 @@
 class LanguageBlueprint < Blueprinter::Base
   identifier :id
 
-  fields :code
+  fields :code, :name
 end
