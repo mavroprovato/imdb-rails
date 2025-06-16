@@ -18,4 +18,11 @@ class TitleEpisodesController < BaseCrudController
   def base_query
     super.where(parent_title_id: params.require(:title_id)).order(:season, :episode)
   end
+
+  # The list of associations to eagerly load, in order to prevent N+1 queries. This method returns [:title].
+  #
+  # @return List[Symbol] Returns [:title].
+  def include
+    [:title]
+  end
 end
