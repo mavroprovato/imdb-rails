@@ -56,6 +56,9 @@ gem 'blueprinter', '~> 1.1.2'
 # Ruby gem with ISO 639-1 and ISO 639-2 language code entries and convenience methods. [https://github.com/xwmx/iso-639]
 gem 'iso-639', '~> 0.3.8'
 
+# All sorts of useful information about every country packaged as convenient little country objects. [https://github.com/countries/countries].
+gem 'countries', '~> 8.0.2'
+
 group :development do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem 'brakeman', require: false

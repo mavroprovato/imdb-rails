@@ -31,7 +31,9 @@ module Etl
       attr_reader :loaded_regions, :loaded_languages, :loaded_titles
 
       def region_data(batch)
-        read_unique_values(batch, :region).each_with_object([]) { |code, array| array << { code: } }
+        read_unique_values(batch, :region).each_with_object([]) do |code, array|
+          array << { code:, name: RegionFinder.region_name(code) }
+        end
       end
 
       def process_regions(batch)
