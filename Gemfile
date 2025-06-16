@@ -87,7 +87,7 @@ group :development, :test do
   gem 'rubocop-factory_bot', '~> 2.27'
 
   # A RuboCop extension focused on enforcing Rails best practices and coding conventions [https://github.com/rubocop/rubocop-rails]
-  gem 'rubocop-rails', '~> 2.31'
+  gem 'rubocop-rails', '~> 2.32'
 
   # Code style checking for RSpec files [https://github.com/rubocop/rubocop-rspec]
   gem 'rubocop-rspec', '~> 3.6'
