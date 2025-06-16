@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# This class finds language names from the codes that are found in dumps
+# A class that finds language names from the codes that are found in dumps
 class LanguageFinder
-  # A has that contains either non-standard codes, or codes for which we want to override their name.
+  # A hash that contains either non-standard codes, or codes for which we want to override their name.
   CODES = {
     'cmn' => 'Mandarin',
     'qbn' => 'Flemish',
@@ -17,7 +17,7 @@ class LanguageFinder
     'qac' => 'Aboriginal'
   }.freeze
 
-  # Return the language name
+  # Return the language name.
   #
   # @param [String] The language code.
   # @return The language name.
