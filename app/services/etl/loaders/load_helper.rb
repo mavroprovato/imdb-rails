@@ -36,6 +36,14 @@ module Etl
         value == NULL_VALUE ? nil : value
       end
 
+      # Transform a nilable string array value
+      #
+      # @param value [String] The string value.
+      # @return [Array<String>, nil] The string array value, or nil.
+      def transform_nilable_string_array(value)
+        value == NULL_VALUE ? [] : value.split("\u0002")
+      end
+
       # Load the unique values for a column from a batch of data.
       #
       # @param batch [Array<Hash>] The data to load.

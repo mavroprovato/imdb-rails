@@ -60,7 +60,7 @@ class Initial < ActiveRecord::Migration[8.0]
 
       t.integer :ordering, null: false
       t.string :name, null: false
-      t.string :alias_type
+      t.string :alias_types, array: true, null: false, default: []
       t.string :extra_attribute
       t.boolean :original_title, null: false, default: true
 

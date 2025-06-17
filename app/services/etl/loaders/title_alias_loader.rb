@@ -65,7 +65,7 @@ module Etl
           name: row[:title],
           region_id: loaded_regions[row[:region]],
           language_id: loaded_languages[row[:language]],
-          alias_type: transform_nilable_string(row[:types]),
+          alias_types: transform_nilable_string_array(row[:types]),
           extra_attribute: transform_nilable_string(row[:attributes]),
           original_title: transform_boolean(row[:isOriginalTitle])
         }

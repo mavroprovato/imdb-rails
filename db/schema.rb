@@ -87,7 +87,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.bigint "language_id"
     t.integer "ordering", null: false
     t.string "name", null: false
-    t.string "alias_type"
+    t.string "alias_types", default: [], null: false, array: true
     t.string "extra_attribute"
     t.boolean "original_title", default: true, null: false
     t.datetime "created_at", null: false
