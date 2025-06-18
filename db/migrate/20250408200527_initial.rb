@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 # The initial database migration
+# rubocop:disable Metrics/AbcSize, Metrics/ClassLength, Metrics/MethodLength
 class Initial < ActiveRecord::Migration[8.0]
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def up
     execute <<~SQL.squish
       CREATE TYPE title_type AS
@@ -110,9 +110,19 @@ class Initial < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
+
+    create_table :title_directors do |t|
+      t.references :person, null: false, foreign_key: true
+      t.references :title, null: false, foreign_key: true
+
+      t.timestamps
+
+      t.index %i[person_id title_id], unique: true
+    end
   end
 
   def down
+    drop_table :title_directors
     drop_table :title_episodes
     drop_table :person_primary_professions
     drop_table :professions
@@ -126,5 +136,5 @@ class Initial < ActiveRecord::Migration[8.0]
       DROP TYPE title_type;
     SQL
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 end
+# rubocop:enable Metrics/AbcSize, Metrics/ClassLength, Metrics/MethodLength

@@ -98,6 +98,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.index ["title_id"], name: "index_title_aliases_on_title_id"
   end
 
+  create_table "title_directors", force: :cascade do |t|
+    t.bigint "person_id", null: false
+    t.bigint "title_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id", "title_id"], name: "index_title_directors_on_person_id_and_title_id", unique: true
+    t.index ["person_id"], name: "index_title_directors_on_person_id"
+    t.index ["title_id"], name: "index_title_directors_on_title_id"
+  end
+
   create_table "title_episodes", force: :cascade do |t|
     t.bigint "title_id", null: false
     t.bigint "parent_title_id", null: false
@@ -142,6 +152,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
   add_foreign_key "title_aliases", "languages"
   add_foreign_key "title_aliases", "regions"
   add_foreign_key "title_aliases", "titles"
+  add_foreign_key "title_directors", "people"
+  add_foreign_key "title_directors", "titles"
   add_foreign_key "title_episodes", "titles"
   add_foreign_key "title_episodes", "titles", column: "parent_title_id"
   add_foreign_key "title_genres", "genres"
