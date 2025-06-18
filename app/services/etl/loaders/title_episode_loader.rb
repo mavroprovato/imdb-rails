@@ -11,14 +11,14 @@ module Etl
       protected
 
       # Returns the name of the file that should be downloaded by the loader. For this loader the filename is
-      # +title.episode.tsv.gz+.
+      # title.episode.tsv.gz.
       #
       # @return [String] Returns title.episode.tsv.gz.
       def filename
         'title.episode.tsv.gz'
       end
 
-      # Process the data loaded from the +title.episode.tsv.gz+ file, and loads them to the database. This class loads
+      # Process the data loaded from the title.episode.tsv.gz file, and loads them to the database. This class loads
       # values for the {#TitleEpisode} model.
       #
       # @param batch Array[Hash] The data to load.

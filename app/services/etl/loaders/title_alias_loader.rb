@@ -9,14 +9,14 @@ module Etl
       protected
 
       # Returns the name of the file that should be downloaded by the loader. For this loader the filename is
-      # +title.akas.tsv.gz+.
+      # title.akas.tsv.gz.
       #
       # @return String Returns title.akas.tsv.gz.
       def filename
         'title.akas.tsv.gz'
       end
 
-      # Process the data loaded from the +title.akas.tsv.gz+ file, and loads them to the database. This class loads
+      # Process the data loaded from the title.akas.tsv.gz file, and loads them to the database. This class loads
       # values for the {#Region}, {#Language} and {#TitleAlias} models.
       #
       # @param batch Array[Hash] The data to load.
