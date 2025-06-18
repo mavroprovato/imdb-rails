@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_18_225031) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -129,6 +129,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.index ["title_id"], name: "index_title_genres_on_title_id"
   end
 
+  create_table "title_writers", force: :cascade do |t|
+    t.bigint "title_id", null: false
+    t.bigint "person_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_title_writers_on_person_id"
+    t.index ["title_id", "person_id"], name: "index_title_writers_on_title_id_and_person_id", unique: true
+    t.index ["title_id"], name: "index_title_writers_on_title_id"
+  end
+
   create_table "titles", force: :cascade do |t|
     t.string "unique_id", null: false
     t.enum "title_type", null: false, enum_type: "title_type"
@@ -158,4 +168,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
   add_foreign_key "title_episodes", "titles", column: "parent_title_id"
   add_foreign_key "title_genres", "genres"
   add_foreign_key "title_genres", "titles"
+  add_foreign_key "title_writers", "people"
+  add_foreign_key "title_writers", "titles"
 end
