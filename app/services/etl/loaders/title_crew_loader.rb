@@ -18,6 +18,10 @@ module Etl
         'title.crew.tsv.gz'
       end
 
+      # Process the data loaded from the title.crew.tsv.gz, and loads them to the database. This class loads values for
+      # the {#TitleDirector} and {#TitleWriter} models.
+      #
+      # @param batch Array[Hash] The data to load.
       def process_data(batch)
         @loaded_titles = loaded_values(Title, :unique_id, read_unique_values(batch, :tconst))
         @loaded_people = loaded_values(Person, :unique_id, read_unique_values(batch, :directors, multivalued: true))
