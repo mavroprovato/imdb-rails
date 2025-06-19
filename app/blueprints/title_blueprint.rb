@@ -9,5 +9,7 @@ class TitleBlueprint < Blueprinter::Base
   view :full do
     association :genres, blueprint: GenreBlueprint
     association :title_aliases, blueprint: TitleAliasBlueprint
+    association :directors, blueprint: PersonBlueprint
+    association :writers, blueprint: PersonBlueprint
   end
 end

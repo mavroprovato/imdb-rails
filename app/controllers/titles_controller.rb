@@ -16,7 +16,7 @@ class TitlesController < BaseCrudController
   #
   # @return List[Symbol] Returns [:genres, { title_aliases: %i[region language] }].
   def include
-    [:genres, { title_aliases: %i[region language] }]
+    [:genres, :directors, :writers, { title_aliases: %i[region language] }]
   end
 
   # The blueprint view to use in order to render the model objects. This method returns :full in order to include the

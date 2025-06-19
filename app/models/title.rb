@@ -13,6 +13,10 @@ class Title < ApplicationRecord
   has_many :title_genres, dependent: :destroy
   has_many :genres, through: :title_genres
   has_many :title_aliases, dependent: :destroy
+  has_many :title_directors, dependent: :destroy
+  has_many :directors, through: :title_directors, source: :person
+  has_many :title_writers, dependent: :destroy
+  has_many :writers, through: :title_writers, source: :person
 
   validates :unique_id, presence: true, uniqueness: true
   validates :title_type, presence: true

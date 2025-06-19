@@ -6,6 +6,8 @@ class PersonBlueprint < Blueprinter::Base
 
   fields :unique_id, :name, :birth_year, :death_year
 
-  association :known_for, blueprint: TitleBlueprint
-  association :primary_professions, blueprint: ProfessionBlueprint
+  view :full do
+    association :known_for, blueprint: TitleBlueprint
+    association :primary_professions, blueprint: ProfessionBlueprint
+  end
 end

@@ -18,4 +18,12 @@ class PeopleController < BaseCrudController
   def include
     %i[known_for primary_professions]
   end
+
+  # The blueprint view to use in order to render the model objects. This method returns :full in order to include the
+  # associations of the +Person+ model.
+  #
+  # @return [Symbol, nil] Return :full.
+  def view
+    :full
+  end
 end
