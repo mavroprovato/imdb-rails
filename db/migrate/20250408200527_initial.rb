@@ -135,7 +135,7 @@ class Initial < ActiveRecord::Migration[8.0]
       t.references :title, null: false, foreign_key: true
       t.references :person, null: false, foreign_key: true
       t.integer :ordering, null: false
-      t.column :category, :principal_category, null: false
+      t.column :principal_category, :principal_category, null: false
       t.string :job
       t.string :characters
 

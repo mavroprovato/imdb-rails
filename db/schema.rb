@@ -134,7 +134,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
     t.bigint "title_id", null: false
     t.bigint "person_id", null: false
     t.integer "ordering", null: false
-    t.enum "category", null: false, enum_type: "principal_category"
+    t.enum "principal_category", null: false, enum_type: "principal_category"
     t.string "job"
     t.string "characters"
     t.datetime "created_at", null: false

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :title_principal do
-    title { nil }
-    person { nil }
+    title
+    person
     ordering { 1 }
-    job { "MyString" }
-    category { "MyString" }
-    characters { "MyString" }
+    principal_category { 'actor' }
+    job { 'job' }
+    characters { 'characters' }
   end
 end
