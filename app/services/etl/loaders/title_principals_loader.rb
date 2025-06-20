@@ -1,0 +1,61 @@
+# frozen_string_literal: true
+
+module Etl
+  module Loaders
+    # Processes the title.principals.tsv.gz file
+    class TitlePrincipalsLoader < BaseLoader
+      include LoadHelper
+
+      protected
+
+      # Returns the name of the file that should be downloaded by the loader. For this loader the filename is
+      # title.principals.tsv.gz.
+      #
+      # @return [String] Returns title.principals.tsv.gz.
+      def filename
+        'title.principals.tsv.gz'
+      end
+
+      # Process the data loaded from the title.principals.tsv.gz file, and loads them to the database. This class loads
+      # values for the {#TitlePrincipal} model.
+      #
+      # @param batch Array[Hash] The data to load.
+      def process_data(batch)
+        @loaded_titles = loaded_values(Title, :unique_id, read_unique_values(batch, :tconst))
+        @loaded_people = loaded_values(Person, :unique_id, read_unique_values(batch, :nconst))
+        TitlePrincipal.import title_principal_data(batch), validate: false, on_duplicate_key_ignore: true
+      end
+
+      private
+
+      def transform_title_principals_row(row)
+        {
+          title_id: loaded_titles[row[:tconst]],
+          person_id: loaded_people[row[:nconst]],
+          ordering: transform_integer(row[:ordering]),
+          category: row[:category],
+          job: transform_nilable_string(row[:job]),
+          characters: transform_nilable_string(row[:characters])&.from(2)&.to(-3)&.gsub('\"', '"')
+        }
+      end
+
+      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+      def title_principal_data(batch)
+        batch.each_with_object([]) do |row, array|
+          if loaded_titles[row[:tconst]].nil?
+            Rails.logger.warn "Title #{row[:tconst]} missing"
+            next
+          end
+          if loaded_people[row[:nconst]].nil?
+            Rails.logger.warn "Principal #{row[:nconst]} missing"
+            next
+          end
+          array << transform_title_principals_row(row)
+        end
+      end
+      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+      attr_reader :loaded_titles, :loaded_people
+    end
+  end
+end

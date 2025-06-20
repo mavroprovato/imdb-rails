@@ -8,7 +8,8 @@ module Etl
     Loaders::TitleAliasLoader,
     Loaders::TitleEpisodeLoader,
     Loaders::NameBasicsLoader,
-    Loaders::TitleCrewLoader
+    Loaders::TitleCrewLoader,
+    Loaders::TitlePrincipalsLoader
   ].freeze
 
   # Performs the ETL procedure

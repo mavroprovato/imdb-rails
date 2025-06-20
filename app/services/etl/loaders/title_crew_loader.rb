@@ -8,8 +8,6 @@ module Etl
 
       protected
 
-      attr_reader :loaded_titles, :loaded_people
-
       # Returns the name of the file that should be downloaded by the loader. For this loader the filename is
       # title.crew.tsv.gz.
       #
@@ -33,6 +31,8 @@ module Etl
       end
 
       private
+
+      attr_reader :loaded_titles, :loaded_people
 
       def transform_title_director_row(row, person_id)
         { title_id: loaded_titles[row[:tconst]], person_id: }

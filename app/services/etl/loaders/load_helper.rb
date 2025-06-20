@@ -44,6 +44,12 @@ module Etl
         value == NULL_VALUE ? [] : value.split("\u0002")
       end
 
+      def transform_nilable_string_array2(value)
+        return [] if value == NULL_VALUE
+
+        value.tr('[]', '{}')
+      end
+
       # Load the unique values for a column from a batch of data.
       #
       # @param batch [Array<Hash>] The data to load.

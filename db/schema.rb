@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_18_225031) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_08_200527) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "principal_category", ["actor", "actress", "archive_footage", "archive_sound", "casting_director", "cinematographer", "composer", "director", "editor", "producer", "production_designer", "self", "writer"]
   create_enum "title_type", ["movie", "short", "tvEpisode", "tvMiniSeries", "tvMovie", "tvPilot", "tvSeries", "tvShort", "tvSpecial", "video", "videoGame"]
 
   create_table "genres", force: :cascade do |t|
@@ -129,6 +130,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_18_225031) do
     t.index ["title_id"], name: "index_title_genres_on_title_id"
   end
 
+  create_table "title_principals", force: :cascade do |t|
+    t.bigint "title_id", null: false
+    t.bigint "person_id", null: false
+    t.integer "ordering", null: false
+    t.enum "category", null: false, enum_type: "principal_category"
+    t.string "job"
+    t.string "characters"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_title_principals_on_person_id"
+    t.index ["title_id", "person_id", "ordering"], name: "index_title_principals_on_title_id_and_person_id_and_ordering", unique: true
+    t.index ["title_id"], name: "index_title_principals_on_title_id"
+    t.check_constraint "ordering >= 1"
+  end
+
   create_table "title_writers", force: :cascade do |t|
     t.bigint "title_id", null: false
     t.bigint "person_id", null: false
@@ -168,6 +184,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_18_225031) do
   add_foreign_key "title_episodes", "titles", column: "parent_title_id"
   add_foreign_key "title_genres", "genres"
   add_foreign_key "title_genres", "titles"
+  add_foreign_key "title_principals", "people"
+  add_foreign_key "title_principals", "titles"
   add_foreign_key "title_writers", "people"
   add_foreign_key "title_writers", "titles"
 end

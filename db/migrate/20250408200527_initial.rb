@@ -7,6 +7,8 @@ class Initial < ActiveRecord::Migration[8.0]
     execute <<~SQL.squish
       CREATE TYPE title_type AS
       ENUM ('movie', 'short', 'tvEpisode', 'tvMiniSeries', 'tvMovie', 'tvPilot', 'tvSeries', 'tvShort', 'tvSpecial', 'video', 'videoGame');
+      CREATE TYPE principal_category AS
+      ENUM ('actor', 'actress', 'archive_footage', 'archive_sound', 'casting_director', 'cinematographer', 'composer', 'director', 'editor', 'producer', 'production_designer', 'self', 'writer')
     SQL
 
     create_table :genres do |t|
@@ -128,9 +130,24 @@ class Initial < ActiveRecord::Migration[8.0]
 
       t.index %i[title_id person_id], unique: true
     end
+
+    create_table :title_principals do |t|
+      t.references :title, null: false, foreign_key: true
+      t.references :person, null: false, foreign_key: true
+      t.integer :ordering, null: false
+      t.column :category, :principal_category, null: false
+      t.string :job
+      t.string :characters
+
+      t.timestamps
+
+      t.index %i[title_id person_id ordering], unique: true
+      t.check_constraint 'ordering >= 1'
+    end
   end
 
   def down
+    drop_table :title_principals
     drop_table :title_writers
     drop_table :title_directors
     drop_table :title_episodes
@@ -144,6 +161,7 @@ class Initial < ActiveRecord::Migration[8.0]
     drop_table :genres
     execute <<~SQL.squish
       DROP TYPE title_type;
+      DROP TYPE principal_category;
     SQL
   end
 end
