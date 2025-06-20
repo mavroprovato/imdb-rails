@@ -21,24 +21,33 @@ module Etl
       #
       # @param batch Array[Hash] The data to load.
       def process_data(batch)
-        process_genres(batch)
-        process_titles(batch)
-        process_title_genres(batch)
+        load_genres(batch)
+        load_titles(batch)
+        load_title_genres(batch)
       end
 
       private
 
       attr_reader :loaded_genres, :loaded_titles
 
-      def genre_data(batch)
+      # Transform the genre data.
+      #
+      # @param batch Array[Hash] The data to load.
+      def transform_genre_data(batch)
         read_unique_values(batch, :genres, multivalued: true).each_with_object([]) { |name, array| array << { name: } }
       end
 
-      def process_genres(batch)
-        Genre.import genre_data(batch), validate: false, on_duplicate_key_ignore: true
+      # Load the +Genre+ data to the database.
+      #
+      # @param batch Array[Hash] The data to load.
+      def load_genres(batch)
+        Genre.import transform_genre_data(batch), validate: false, on_duplicate_key_ignore: true
         @loaded_genres = loaded_values(Genre, :name, read_unique_values(batch, :genres, multivalued: true))
       end
 
+      # Transform each input row in order to be load a +Title+ model.
+      #
+      # @param row [Hash] The data to load.
       def transform_title_row(row)
         {
           unique_id: row[:tconst],
@@ -52,32 +61,40 @@ module Etl
         }
       end
 
-      def title_data(batch)
+      # Transform the title data.
+      #
+      # @param batch Array[Hash] The data to load.
+      def transform_title_data(batch)
         batch.map { |row| transform_title_row(row) }
       end
 
-      def process_titles(batch)
-        Title.import title_data(batch), validate: false, on_duplicate_key_update: {
+      # Load the +Title+ data to the database.
+      #
+      # @param batch Array[Hash] The data to load.
+      def load_titles(batch)
+        Title.import transform_title_data(batch), validate: false, on_duplicate_key_update: {
           conflict_target: [:unique_id],
           columns: %i[title_type title original_title adult start_year end_year runtime]
         }
         @loaded_titles = loaded_values(Title, :unique_id, read_unique_values(batch, :tconst))
       end
 
-      def transform_genre_data_row(row, genre_id)
-        { title_id: loaded_titles[row[:tconst]], genre_id: }
-      end
-
-      def title_genre_data(batch)
+      # Transform the title genre data.
+      #
+      # @param batch Array[Hash] The data to load.
+      def transform_title_genres(batch)
         batch.reject { |row| row[:genres] == NULL_VALUE }.each_with_object([]) do |row, array|
-          row[:genres].split(',') do |genre|
-            array << transform_genre_data_row(row, loaded_genres[genre])
+          row[:genres].split(',').each do |genre|
+            array << { title_id: loaded_titles[row[:tconst]], genre_id: loaded_genres[genre] }
           end
         end
       end
 
-      def process_title_genres(batch)
-        TitleGenre.import title_genre_data(batch), validate: false, on_duplicate_key_ignore: true
+      # Load the +TitleGenre+ data to the database.
+      #
+      # @param batch Array[Hash] The data to load.
+      def load_title_genres(batch)
+        TitleGenre.import transform_title_genres(batch), validate: false, on_duplicate_key_ignore: true
       end
     end
   end
