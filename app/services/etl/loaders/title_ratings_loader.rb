@@ -19,17 +19,22 @@ module Etl
       # Process the data loaded from the title.ratings.tsv.gz file, and loads them to the database. This class
       # updates values for the {#Title} model.
       #
-      # @param batch Array[Hash] The data to load.
+      # @param batch Array[Hash] The batch data.
       def process_data(batch)
-        process_title_ratings(batch)
+        load_title_ratings(batch)
       end
 
       private
 
-      def process_title_ratings(batch)
+      # Load the title ratings. It updates the ratings column for existing titles in the database.
+      def load_title_ratings(batch)
         ActiveRecord::Base.connection.execute update_sql(batch)
       end
 
+      # The update SQL needed to update ratings for titles
+      #
+      # @param batch Array[Hash] The batch data.
+      # @return String The update SQL
       def update_sql(batch)
         values = batch.map { |row| "('#{row[:tconst]}', #{row[:averageRating]}, #{row[:numVotes]})" }.join(',')
         <<~SQL.squish
