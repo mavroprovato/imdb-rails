@@ -22,4 +22,5 @@ class Title < ApplicationRecord
   validates :title_type, presence: true
   validates :title, presence: true
   validates :original_title, presence: true
+  validates :rating, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }, allow_nil: true
 end
