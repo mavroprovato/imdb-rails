@@ -21,42 +21,56 @@ module Etl
       #
       # @param batch Array[Hash] The data to load.
       def process_data(batch)
-        process_regions(batch)
-        process_languages(batch)
-        process_title_alias(batch)
+        load_regions(batch)
+        load_languages(batch)
+        load_title_alias(batch)
       end
 
       private
 
       attr_reader :loaded_regions, :loaded_languages, :loaded_titles
 
-      def region_data(batch)
+
+      # Transform the region data for each batch.
+      #
+      # @param batch Array[Hash] The batch data.
+      # @return Array[Hash] The transformed region data.
+      def transform_regions(batch)
         read_unique_values(batch, :region).each_with_object([]) do |code, array|
           array << { code:, name: RegionFinder.region_name(code) }
         end
       end
 
-      def process_regions(batch)
-        Region.import region_data(batch), validate: false, on_duplicate_key_ignore: true
+      # Load the +Region+ data to the database.
+      #
+      # @param batch Array[Hash] The batch data.
+      def load_regions(batch)
+        Region.import transform_regions(batch), validate: false, on_duplicate_key_ignore: true
         @loaded_regions = loaded_values(Region, :code, read_unique_values(batch, :region))
       end
 
+      # Transform the language data for each batch.
+      #
+      # @param batch Array[Hash] The batch data.
+      # @return Array[Hash] The transformed language data.
       def language_data(batch)
         read_unique_values(batch, :language).each_with_object([]) do |code, array|
           array << { code:, name: LanguageFinder.language_name(code) }
         end
       end
 
-      def process_languages(batch)
+      # Load the +Language+ data to the database.
+      #
+      # @param batch Array[Hash] The batch data.
+      def load_languages(batch)
         Language.import language_data(batch), validate: false, on_duplicate_key_ignore: true
         @loaded_languages = loaded_values(Language, :code, read_unique_values(batch, :language))
       end
 
-      def process_title_alias(batch)
-        @loaded_titles = loaded_values(Title, :unique_id, read_unique_values(batch, :titleId))
-        TitleAlias.import title_alias_data(batch), validate: false, on_duplicate_key_ignore: true
-      end
-
+      # Transform each input row from the data file in order to be loaded into a +TitleAlias+ model.
+      #
+      # @param row Hash The data file input row.
+      # @return Hash The transformed data.
       # rubocop:disable Metrics/AbcSize
       def transform_title_alias_row(row)
         {
@@ -72,6 +86,10 @@ module Etl
       end
       # rubocop:enable Metrics/AbcSize
 
+      # Transform the title alias data for each batch.
+      #
+      # @param batch Array[Hash] The batch data.
+      # @return Array[Hash] The data to load.
       def title_alias_data(batch)
         batch.each_with_object([]) do |row, array|
           if loaded_titles[row[:titleId]].nil?
@@ -80,6 +98,14 @@ module Etl
           end
           array << transform_title_alias_row(row)
         end
+      end
+
+      # Load the +TitleAlias+ data to the database.
+      #
+      # @param batch Array[Hash] The batch data.
+      def load_title_alias(batch)
+        @loaded_titles = loaded_values(Title, :unique_id, read_unique_values(batch, :titleId))
+        TitleAlias.import title_alias_data(batch), validate: false, on_duplicate_key_ignore: true
       end
     end
   end

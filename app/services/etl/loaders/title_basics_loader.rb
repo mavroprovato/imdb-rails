@@ -34,7 +34,7 @@ module Etl
       #
       # @param batch Array[Hash] The batch data.
       # @return Array[Hash] The transformed genre data.
-      def transform_genre_data(batch)
+      def transform_genres(batch)
         read_unique_values(batch, :genres, multivalued: true).each_with_object([]) { |name, array| array << { name: } }
       end
 
@@ -42,7 +42,7 @@ module Etl
       #
       # @param batch Array[Hash] The batch data.
       def load_genres(batch)
-        Genre.import transform_genre_data(batch), validate: false, on_duplicate_key_ignore: true
+        Genre.import transform_genres(batch), validate: false, on_duplicate_key_ignore: true
         @loaded_genres = loaded_values(Genre, :name, read_unique_values(batch, :genres, multivalued: true))
       end
 
