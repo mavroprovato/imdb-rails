@@ -41,7 +41,7 @@ module Etl
         end
       end
 
-      # Load the +Region+ data to the database.
+      # Load the {Region} data to the database.
       #
       # @param batch Array[Hash] The batch data.
       def load_regions(batch)
@@ -67,7 +67,7 @@ module Etl
         @loaded_languages = loaded_values(Language, :code, read_unique_values(batch, :language))
       end
 
-      # Transform each input row from the data file in order to be loaded into a +TitleAlias+ model.
+      # Transform each input row from the data file in order to be loaded into a {TitleAlias} model.
       #
       # @param row Hash The data file input row.
       # @return Hash The transformed data.
@@ -100,7 +100,7 @@ module Etl
         end
       end
 
-      # Load the +TitleAlias+ data to the database.
+      # Load the {TitleAlias} data to the database.
       #
       # @param batch Array[Hash] The batch data.
       def load_title_alias(batch)
