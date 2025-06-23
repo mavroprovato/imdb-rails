@@ -90,7 +90,7 @@ module Etl
       #
       # @param batch Array[Hash] The batch data.
       # @return Array[Hash] The data to load.
-      def title_alias_data(batch)
+      def transform_title_aliases(batch)
         batch.each_with_object([]) do |row, array|
           if loaded_titles[row[:titleId]].nil?
             Rails.logger.warn "Title #{row[:titleId]} not loaded"
@@ -105,7 +105,7 @@ module Etl
       # @param batch Array[Hash] The batch data.
       def load_title_alias(batch)
         @loaded_titles = loaded_values(Title, :unique_id, read_unique_values(batch, :titleId))
-        TitleAlias.import title_alias_data(batch), validate: false, on_duplicate_key_ignore: true
+        TitleAlias.import transform_title_aliases(batch), validate: false, on_duplicate_key_ignore: true
       end
     end
   end

@@ -6,6 +6,7 @@ module Etl
     class TitleEpisodeLoader < BaseLoader
       # The title of the columns which contain titles
       TITLE_COLUMN_NAMES = %i[tconst parentTconst].freeze
+
       include LoadHelper
 
       protected
@@ -23,19 +24,17 @@ module Etl
       #
       # @param batch Array[Hash] The data to load.
       def process_data(batch)
-        process_title_episodes(batch)
+        load_title_episodes(batch)
       end
 
       private
 
       attr_reader :loaded_titles
 
-      def process_title_episodes(batch)
-        @loaded_titles = loaded_values(Title, :unique_id, read_unique_values(batch, :tconst))
-                         .merge(loaded_values(Title, :unique_id, read_unique_values(batch, :parentTconst)))
-        TitleEpisode.import title_episode_data(batch), validate: false, on_duplicate_key_ignore: true
-      end
-
+      # Transform each input row from the data file in order to be loaded into a +TitleEpisode+ model.
+      #
+      # @param row Hash The data file input row.
+      # @return Hash The transformed data.
       def transform_title_episode_row(row)
         {
           title_id: loaded_titles[row[:tconst]],
@@ -45,7 +44,11 @@ module Etl
         }
       end
 
-      def title_episode_data(batch)
+      # Transform the title episode data for each batch.
+      #
+      # @param batch Array[Hash] The batch data.
+      # @return Array[Hash] The data to load.
+      def transform_title_episodes(batch)
         batch.each_with_object([]) do |row, array|
           title_missing = false
           TITLE_COLUMN_NAMES.each do |column|
@@ -56,6 +59,15 @@ module Etl
           end
           array << transform_title_episode_row(row) unless title_missing
         end
+      end
+
+      # Load the +TitleEpisode+ data to the database.
+      #
+      # @param batch Array[Hash] The batch data.
+      def load_title_episodes(batch)
+        @loaded_titles = loaded_values(Title, :unique_id, read_unique_values(batch, :tconst))
+                         .merge(loaded_values(Title, :unique_id, read_unique_values(batch, :parentTconst)))
+        TitleEpisode.import transform_title_episodes(batch), validate: false, on_duplicate_key_ignore: true
       end
     end
   end
