@@ -17,16 +17,25 @@ module Etl
       end
 
       # Process the data loaded from the title.principals.tsv.gz file, and loads them to the database. This class loads
-      # values for the {#TitlePrincipal} model.
+      # values for the {TitlePrincipal} model.
       #
       # @param batch Array[Hash] The data to load.
       def process_data(batch)
         @loaded_titles = loaded_values(Title, :unique_id, read_unique_values(batch, :tconst))
         @loaded_people = loaded_values(Person, :unique_id, read_unique_values(batch, :nconst))
-        TitlePrincipal.import title_principal_data(batch), validate: false, on_duplicate_key_ignore: true
+        load_title_principal_data(batch)
       end
 
       private
+
+      attr_reader :loaded_titles, :loaded_people
+
+      def transform_characters(characters)
+        characters = transform_nilable_string(characters)
+        return nil if characters.nil?
+
+        characters[2...-3].gsub('\"', '"')
+      end
 
       def transform_title_principals_row(row)
         {
@@ -35,7 +44,7 @@ module Etl
           ordering: transform_integer(row[:ordering]),
           category: row[:category],
           job: transform_nilable_string(row[:job]),
-          characters: transform_nilable_string(row[:characters])&.from(2)&.to(-3)&.gsub('\"', '"')
+          characters: transform_characters(row[:characters])
         }
       end
 
@@ -55,7 +64,9 @@ module Etl
       end
       # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-      attr_reader :loaded_titles, :loaded_people
+      def load_title_principal_data(batch)
+        TitlePrincipal.import title_principal_data(batch), validate: false, on_duplicate_key_ignore: true
+      end
     end
   end
 end
