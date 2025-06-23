@@ -4,10 +4,10 @@ module Etl
   # All loader classes used to load data
   LOADERS = [
     Loaders::TitleBasicsLoader,
+    Loaders::NameBasicsLoader,
     Loaders::TitleRatingsLoader,
     Loaders::TitleAliasLoader,
     Loaders::TitleEpisodeLoader,
-    Loaders::NameBasicsLoader,
     Loaders::TitleCrewLoader,
     Loaders::TitlePrincipalsLoader
   ].freeze
