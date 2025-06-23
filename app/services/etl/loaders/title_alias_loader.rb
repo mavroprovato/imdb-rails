@@ -30,7 +30,6 @@ module Etl
 
       attr_reader :loaded_regions, :loaded_languages, :loaded_titles
 
-
       # Transform the region data for each batch.
       #
       # @param batch Array[Hash] The batch data.
