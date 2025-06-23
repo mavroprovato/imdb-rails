@@ -30,33 +30,45 @@ module Etl
 
       attr_reader :loaded_titles, :loaded_people
 
+      # Transforms the characters for a principal by cleaning up extra characters.
+      #
+      # @param characters [String]
+      # @return String The cleaned up string.
       def transform_characters(characters)
         characters = transform_nilable_string(characters)
         return nil if characters.nil?
 
-        characters[2...-3].gsub('\"', '"')
+        characters[2...-2].gsub('\"', '"')
       end
 
+      # Transform each input row in order to be loaded into a {TitlePrincipal} model.
+      #
+      # @param row Hash The data file input row.
+      # @return Array[Hash] The transformed data.
       def transform_title_principals_row(row)
         {
           title_id: loaded_titles[row[:tconst]],
           person_id: loaded_people[row[:nconst]],
           ordering: transform_integer(row[:ordering]),
-          category: row[:category],
+          principal_category: row[:category],
           job: transform_nilable_string(row[:job]),
           characters: transform_characters(row[:characters])
         }
       end
 
+      # Transform the title principal data for each batch.
+      #
+      # @param batch Array[Hash] The batch data.
+      # @return Array[Hash] The data to load.
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def title_principal_data(batch)
         batch.each_with_object([]) do |row, array|
           if loaded_titles[row[:tconst]].nil?
-            Rails.logger.warn "Title #{row[:tconst]} missing"
+            Rails.logger.warn "Title #{row[:tconst]} not loaded"
             next
           end
           if loaded_people[row[:nconst]].nil?
-            Rails.logger.warn "Principal #{row[:nconst]} missing"
+            Rails.logger.warn "Person #{row[:nconst]} missing"
             next
           end
           array << transform_title_principals_row(row)
@@ -64,6 +76,9 @@ module Etl
       end
       # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
+      # Load the {TitlePrincipal} data to the database.
+      #
+      # @param batch Array[Hash] The batch data.
       def load_title_principal_data(batch)
         TitlePrincipal.import title_principal_data(batch), validate: false, on_duplicate_key_ignore: true
       end
