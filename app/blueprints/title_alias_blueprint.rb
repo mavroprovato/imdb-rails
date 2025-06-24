@@ -4,7 +4,7 @@
 class TitleAliasBlueprint < Blueprinter::Base
   identifier :id
 
-  fields :ordering, :name, :alias_type, :extra_attribute, :original_title
+  fields :ordering, :name, :alias_types, :extra_attribute, :original_title
 
   association :region, blueprint: RegionBlueprint
   association :language, blueprint: LanguageBlueprint
