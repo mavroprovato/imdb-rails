@@ -80,7 +80,9 @@ module Etl
       #
       # @param batch Array[Hash] The batch data.
       def load_title_principal_data(batch)
-        TitlePrincipal.import title_principal_data(batch), validate: false, on_duplicate_key_ignore: true
+        TitlePrincipal.import title_principal_data(batch), validate: false, on_duplicate_key_update: {
+          conflict_target: %i[title_id person_id ordering], columns: %i[principal_category job characters]
+        }
       end
     end
   end
