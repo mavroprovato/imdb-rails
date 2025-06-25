@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :genres, only: %i[index show]
   resources :titles, only: %i[index show] do
     resources :title_episodes, only: %i[index]
+    resources :title_principals, only: %i[index]
   end
   resources :people, only: %i[index show]
   resources :professions, only: %i[index show]
