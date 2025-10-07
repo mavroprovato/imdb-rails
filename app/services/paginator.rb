@@ -7,18 +7,21 @@ class Paginator
   # The maximum page size
   MAX_PAGE_SIZE = 1000
 
-  def initialize(page = 1, per_page = DEFAULT_PAGE_SIZE)
+  def initialize(query, page = 1, per_page = DEFAULT_PAGE_SIZE)
+    @query = query
     @page = parse_page(page)
     @per_page = parse_per_page(per_page)
   end
 
-  def paginate_query(query)
+  def results
     query.limit(per_page).offset(offset)
   end
 
+  delegate :count, to: :query
+
   private
 
-  attr_reader :page, :per_page
+  attr_reader :query, :page, :per_page
 
   def parse_page(page)
     page = page.to_i
