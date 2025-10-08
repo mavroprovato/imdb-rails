@@ -61,13 +61,13 @@ gem 'countries', '~> 8.0.2'
 
 group :development do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
-  gem 'brakeman', require: false
+  gem 'brakeman', '~> 7.1', require: false
 
   # Rubocop for static analysis [https://github.com/rubocop/rubocop]
-  gem 'rubocop'
+  gem 'rubocop', '~> 1.79'
 
   # Use console on exceptions pages [https://github.com/rails/web-console]
-  gem 'web-console'
+  gem 'web-console', '~> 4.2.0'
 end
 
 group :development, :test do
@@ -75,10 +75,10 @@ group :development, :test do
   gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
 
   # Factory bot for generating test data [https://github.com/thoughtbot/factory_bot_rails]
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '~> 6.5'
 
   # Rspec for testing [https://rspec.info/]
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 8.0'
 
   # An extension of RuboCop focused on code performance checks [https://github.com/rubocop/rubocop-performance]
   gem 'rubocop-performance', '~> 1.25'
