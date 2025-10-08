@@ -2,14 +2,18 @@
 
 # A class for paginating queries
 class Paginator
+  # The page parameter name
+  PAGE_PARAM = 'page'
+  # The page site parameter name
+  PAGE_SIZE_PARAM = 'per_page'
   # The default page size
   DEFAULT_PAGE_SIZE = 100
   # The maximum page size
   MAX_PAGE_SIZE = 1000
 
-  def initialize(page = 1, per_page = DEFAULT_PAGE_SIZE)
-    @page = parse_page(page)
-    @per_page = parse_per_page(per_page)
+  def initialize(params)
+    @page = parse_page(params)
+    @per_page = parse_per_page(params)
   end
 
   def paginate_query(query)
@@ -20,15 +24,15 @@ class Paginator
 
   attr_reader :page, :per_page
 
-  def parse_page(page)
-    page = page.to_i
+  def parse_page(params)
+    page = params[PAGE_PARAM].to_i
     return 1 if page < 1
 
     page
   end
 
-  def parse_per_page(per_page)
-    per_page = per_page.to_i
+  def parse_per_page(params)
+    per_page = params[PAGE_SIZE_PARAM].to_i
     return DEFAULT_PAGE_SIZE if per_page <= 0
 
     [MAX_PAGE_SIZE, per_page].min

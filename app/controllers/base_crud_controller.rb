@@ -52,11 +52,11 @@ class BaseCrudController < ApplicationController
   private
 
   def paginate_query(query)
-    Paginator.new(params['page'], params['per_page']).paginate_query query
+    Paginator.new(params).paginate_query query
   end
 
   def order_query(query)
-    Ordering.new(params['order'], params['direction']).order_query query
+    Ordering.new(params).order_query query
   end
 
   def results_query
