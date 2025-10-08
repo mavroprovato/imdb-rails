@@ -80,7 +80,7 @@ module Etl
           language_id: loaded_languages[row[:language]],
           alias_types: transform_nilable_string_array(row[:types]),
           extra_attribute: transform_nilable_string(row[:attributes]),
-          original_title: transform_boolean(row[:isOriginalTitle])
+          original_title: transform_boolean?(row[:isOriginalTitle])
         }
       end
       # rubocop:enable Metrics/AbcSize

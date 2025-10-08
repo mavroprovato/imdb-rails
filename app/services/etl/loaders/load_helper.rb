@@ -8,7 +8,7 @@ module Etl
       #
       # @param value [String] The input value.
       # @return [Boolean] The boolean value.
-      def transform_boolean(value)
+      def transform_boolean?(value)
         value == '1'
       end
 

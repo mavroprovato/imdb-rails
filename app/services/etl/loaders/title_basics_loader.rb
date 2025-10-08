@@ -56,7 +56,7 @@ module Etl
           title_type: row[:titleType],
           title: row[:primaryTitle],
           original_title: row[:originalTitle],
-          adult: transform_boolean(row[:isAdult]),
+          adult: transform_boolean?(row[:isAdult]),
           start_year: transform_nilable_integer(row[:startYear]),
           end_year: transform_nilable_integer(row[:endYear]),
           runtime: transform_nilable_integer(row[:runtimeMinutes])
