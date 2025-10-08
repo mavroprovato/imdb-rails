@@ -11,11 +11,18 @@ class Paginator
   # The maximum page size
   MAX_PAGE_SIZE = 1000
 
+  # Initialize the paginator.
+  #
+  # @param params [ActionController::Params] The request parameters.
   def initialize(params)
     @page = parse_page(params)
     @per_page = parse_per_page(params)
   end
 
+  # Paginate the query.
+  #
+  # @param query ActiveRecord::Relation The query.
+  # @return ActiveRecord::Relation The paginated query.
   def paginate_query(query)
     query.limit(per_page).offset(offset)
   end

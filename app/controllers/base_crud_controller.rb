@@ -4,10 +4,12 @@
 class BaseCrudController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
+  # Return the list response
   def index
     render json: { total: base_query.count, results: blueprint.render_as_hash(results_query, view:) }
   end
 
+  # Return the read response
   def show
     render json: blueprint.render(model.find(params[:id]), view:)
   end

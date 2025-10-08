@@ -9,13 +9,22 @@ class Ordering
   # Ordering direction values
   ORDERING_DIRECTION_VALUES = %w[asc desc].freeze
 
-  def initialize(params, ordering_fields = nil, default_ordering_field = nil)
+  # Initialize the ordering.
+  #
+  # @param params [ActionController::Params] The request parameters.
+  # @param ordering_fields List[Symbol] The ordering fields.
+  # @param default_ordering_field Symbol The default ordering field.
+  def initialize(params, ordering_fields, default_ordering_field)
     @ordering_fields = ordering_fields
     @default_ordering_field = default_ordering_field
     @field = parse_field(params)
     @direction = parse_direction(params)
   end
 
+  # Order the query.
+  #
+  # @param query ActiveRecord::Relation The query.
+  # @return ActiveRecord::Relation The ordered query.
   def order_query(query)
     order = [{ id: :asc }]
     order.unshift({ field => direction }) if field.present?
