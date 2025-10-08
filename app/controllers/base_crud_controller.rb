@@ -52,7 +52,7 @@ class BaseCrudController < ApplicationController
   private
 
   def results
-    blueprint.render_as_hash(order_query(paginator.results), view:)
+    blueprint.render_as_hash order_query(paginator.results), view:
   end
 
   def total
