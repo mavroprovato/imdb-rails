@@ -45,7 +45,7 @@ gem 'thruster', require: false
 # gem "image_processing", "~> 1.2"
 
 # Add Faraday for HTTP requests
-gem 'faraday', '~> 2.13'
+gem 'faraday', '~> 2.14'
 
 # A library for bulk insertion of data into your database using ActiveRecord [https://github.com/zdennis/activerecord-import]
 gem 'activerecord-import', '~> 2.1'
