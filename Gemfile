@@ -64,7 +64,7 @@ group :development do
   gem 'brakeman', '~> 7.1', require: false
 
   # Rubocop for static analysis [https://github.com/rubocop/rubocop]
-  gem 'rubocop', '~> 1.79'
+  gem 'rubocop', '~> 1.81'
 
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'web-console', '~> 4.2.0'
