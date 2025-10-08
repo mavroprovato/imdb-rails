@@ -10,4 +10,15 @@ class GenresController < BaseCrudController
   def model
     Genre
   end
+
+  # The ordering fields available for the controller.
+  #
+  # @return List[Symbol] Returns [:name].
+  def ordering_fields
+    [:name]
+  end
+
+  def default_ordering_field
+    :name
+  end
 end

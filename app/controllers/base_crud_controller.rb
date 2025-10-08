@@ -35,6 +35,16 @@ class BaseCrudController < ApplicationController
   # @return [Symbol, nil] The blueprint view to use in order to render the model objects.
   def view; end
 
+  # The ordering fields available for the controller.
+  #
+  # @return List[Symbol] The ordering fields available for the controller.
+  def ordering_fields; end
+
+  # The default ordering field
+  #
+  # @return [List[Symbol], nil] The default ordering field.
+  def default_ordering_field; end
+
   # The base query used to fetch the objects for the controller.
   #
   # @return The base query used to fetch the objects for the controller.
@@ -56,7 +66,7 @@ class BaseCrudController < ApplicationController
   end
 
   def order_query(query)
-    Ordering.new(params).order_query query
+    Ordering.new(params, ordering_fields, default_ordering_field).order_query query
   end
 
   def results_query
