@@ -5,7 +5,7 @@ class BaseCrudController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def index
-    render json: { total:, results: }
+    render json: { total: base_query.count, results: blueprint.render_as_hash(results_query, view:) }
   end
 
   def show
@@ -51,20 +51,16 @@ class BaseCrudController < ApplicationController
 
   private
 
-  def results
-    blueprint.render_as_hash order_query(paginator.results), view:
-  end
-
-  def total
-    paginator.count
-  end
-
-  def paginator
-    @paginator ||= Paginator.new(base_query, params['page'], params['per_page'])
+  def paginate_query(query)
+    Paginator.new(params['page'], params['per_page']).paginate_query query
   end
 
   def order_query(query)
     query.order(:id)
+  end
+
+  def results_query
+    paginate_query order_query base_query
   end
 
   def record_not_found
