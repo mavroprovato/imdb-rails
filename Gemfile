@@ -28,24 +28,24 @@ gem 'jbuilder'
 gem 'tzinfo-data', platforms: %i[windows jruby]
 
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
-gem 'solid_cable'
-gem 'solid_cache'
-gem 'solid_queue'
+gem 'solid_cable', '~> 3.0'
+gem 'solid_cache', '~> 1.0'
+gem 'solid_queue', '~> 1.2'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', require: false
+gem 'bootsnap', '~> 1.18', require: false
 
 # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
-gem 'kamal', require: false
+gem 'kamal', '~> 2.7', require: false
 
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
-gem 'thruster', require: false
+gem 'thruster', '~> 0.1.15', require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
 # Add Faraday for HTTP requests
-gem 'faraday', '~> 2.13'
+gem 'faraday', '~> 2.14'
 
 # A library for bulk insertion of data into your database using ActiveRecord [https://github.com/zdennis/activerecord-import]
 gem 'activerecord-import', '~> 2.1'
@@ -64,7 +64,7 @@ group :development do
   gem 'brakeman', '~> 7.1', require: false
 
   # Rubocop for static analysis [https://github.com/rubocop/rubocop]
-  gem 'rubocop', '~> 1.79'
+  gem 'rubocop', '~> 1.81'
 
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'web-console', '~> 4.2.0'
@@ -87,7 +87,7 @@ group :development, :test do
   gem 'rubocop-factory_bot', '~> 2.27'
 
   # A RuboCop extension focused on enforcing Rails best practices and coding conventions [https://github.com/rubocop/rubocop-rails]
-  gem 'rubocop-rails', '~> 2.31'
+  gem 'rubocop-rails', '~> 2.33'
 
   # Code style checking for RSpec files [https://github.com/rubocop/rubocop-rspec]
   gem 'rubocop-rspec', '~> 3.6'
@@ -96,7 +96,7 @@ group :development, :test do
   gem 'rubocop-rspec_rails', '~> 2.31'
 
   # One-liners to test common Rails functionality
-  gem 'shoulda-matchers', '~> 6.0'
+  gem 'shoulda-matchers', '~> 6.5'
 
   # Code coverage for Ruby [https://github.com/simplecov-ruby/simplecov]
   gem 'simplecov', '~> 0.21'
