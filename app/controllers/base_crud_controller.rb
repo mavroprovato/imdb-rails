@@ -56,7 +56,7 @@ class BaseCrudController < ApplicationController
   end
 
   def order_query(query)
-    query.order(:id)
+    Ordering.new(params['order'], params['direction']).order_query query
   end
 
   def results_query
