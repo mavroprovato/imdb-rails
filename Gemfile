@@ -57,7 +57,7 @@ gem 'blueprinter', '~> 1.1.2'
 gem 'iso-639', '~> 0.3.8'
 
 # All sorts of useful information about every country packaged as convenient little country objects. [https://github.com/countries/countries].
-gem 'countries', '~> 8.0.2'
+gem 'countries', '~> 8.0.4'
 
 group :development do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
