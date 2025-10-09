@@ -90,7 +90,7 @@ group :development, :test do
   gem 'rubocop-rails', '~> 2.33'
 
   # Code style checking for RSpec files [https://github.com/rubocop/rubocop-rspec]
-  gem 'rubocop-rspec', '~> 3.6'
+  gem 'rubocop-rspec', '~> 3.7'
 
   # Code style checking for Rails-related RSpec files [https://github.com/rubocop/rubocop-rspec_rails]
   gem 'rubocop-rspec_rails', '~> 2.31'
