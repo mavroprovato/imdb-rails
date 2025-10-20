@@ -81,7 +81,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 8.0'
 
   # An extension of RuboCop focused on code performance checks [https://github.com/rubocop/rubocop-performance]
-  gem 'rubocop-performance', '~> 1.25'
+  gem 'rubocop-performance', '~> 1.26'
 
   # Code style checking for factory_bot files [https://github.com/rubocop/rubocop-factory_bot]
   gem 'rubocop-factory_bot', '~> 2.27'
